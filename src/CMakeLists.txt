@@ -4,4 +4,6 @@ project(ciobserver_exe)
 add_subdirectory(core)
 
 set(ciobserver_source_files main.cpp)
+
 add_executable(ciobserver ${ciobserver_source_files})
+target_link_libraries(ciobserver core)
