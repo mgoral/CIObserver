@@ -37,12 +37,6 @@ target_link_libraries(${PROJECT_TEST_BIN} gtest_main gmock)
 
 # ----- Add custom targets and installation dir for main binary
 
-add_custom_target(
-    debug
-    DEPENDS ${PROJECT_BIN}
-    COMMENT "Building debug binary"
-)
-
 if (NOT CMAKE_CROSSCOMPILING)
     add_custom_target(
         check
