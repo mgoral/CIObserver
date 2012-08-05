@@ -23,9 +23,8 @@ endif()
 if (NOT CMAKE_CROSSCOMPILING)
     add_custom_target(
         check
-        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_TEST_BIN}"
         "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_BIN}"
-        DEPENDS ${PROJECT_TEST_BIN} ${PROJECT_BIN}
+        DEPENDS test ${PROJECT_BIN}
         COMMENT "Checking build (UT + executing a binary)"
         VERBATIM
     ) # SOURCES ${test_SRCS})
