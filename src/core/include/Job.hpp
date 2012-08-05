@@ -24,7 +24,7 @@ public:
     Job(JobName name, JobStatus status = UNKNOWN, JobTime datetime = JobTime::Now());
     virtual ~Job();
 
-    JobHistoryRange getHistory() const;
+    HistoryElement getHistoryElement(u32 pos) const;
     JobName getName() const;
     JobStatus getStatus() const;
     virtual size_t getHistorySize() const;

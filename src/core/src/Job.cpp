@@ -21,8 +21,11 @@ void Job::updateHistory() {
     }
 }
 
-IJob::JobHistoryRange Job::getHistory() const {
-    return IJob::JobHistoryRange(history.begin(), history.end());
+HistoryElement Job::getHistoryElement(u32 pos) const {
+    if(pos > history.size()) {
+        return HistoryElement();
+    }
+    return history.at(pos);
 }
 
 JobName Job::getName() const {

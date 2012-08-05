@@ -1,7 +1,7 @@
 #ifndef IJOB_HPP
 #define IJOB_HPP
 
-#include <list>
+#include <deque>
 #include <wx/url.h>
 #include <wx/datetime.h>
 
@@ -12,7 +12,8 @@ namespace ci {
 
 namespace core {
 
-typedef std::list< std::pair<wxDateTime, JobStatus> > JobHistory;
+typedef std::pair<wxDateTime, JobStatus> HistoryElement;
+typedef std::deque< HistoryElement > JobHistory;
 typedef wxURL JobUrl;
 
 /*
@@ -21,14 +22,16 @@ typedef wxURL JobUrl;
 class IJob {
 public:
     typedef wxDateTime JobTime;
-    typedef std::pair<JobHistory::const_iterator, JobHistory::const_iterator> JobHistoryRange;
 
     virtual ~IJob() {}
 
     /*
-     * @brief Return a pair of const_iterators to the begin and the end of JobHistory
+     * @brief Return a History Element
+     * @param[in] pos Number of element to return
+     * @return HistoryElement or there is no HistoryElement at given position, default HistoryElement constructed
+     *         from default constructor
      */
-    virtual JobHistoryRange getHistory() const = 0;
+    virtual HistoryElement getHistoryElement(u32 pos) const = 0;
 
     /*
      * @brief Return job name known from the parsed XML.
