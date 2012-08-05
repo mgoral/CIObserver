@@ -18,23 +18,6 @@ elseif(${CMAKE_BUILD_TYPE} MATCHES "^[A-Za-z0-9_]+")
     message(STATUS "Build type is '${CMAKE_BUILD_TYPE}'. Binaries will NOT BE srtipped.")
 endif()
 
-# ----- Target: CIObserver_exe_test
-
-set(PROJECT_TEST_BIN ${PROJECT_BIN}_test)
-
-include_directories(
-    ${PROJECT_SOURCE_DIR}/thirdparty/gmock/include
-    ${PROJECT_SOURCE_DIR}/thirdparty/gmock/gtest/include
-)
-
-file(
-    GLOB_RECURSE TEST_FILES
-    */tests/*Tests.cpp
-)
-
-add_executable(${PROJECT_TEST_BIN} EXCLUDE_FROM_ALL ${TEST_FILES})
-target_link_libraries(${PROJECT_TEST_BIN} gtest_main gmock)
-
 # ----- Add custom targets and installation dir for main binary
 
 if (NOT CMAKE_CROSSCOMPILING)
@@ -49,8 +32,7 @@ if (NOT CMAKE_CROSSCOMPILING)
 
     add_custom_target(
         test
-        "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_TEST_BIN}"
-        DEPENDS ${PROJECT_TEST_BIN}
+        DEPENDS ${TEST_DEPS} # created in added subdirs
         COMMENT "Executing Unit Tests"
         VERBATIM
     ) # SOURCES ${test_SRCS})

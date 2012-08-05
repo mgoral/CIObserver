@@ -13,3 +13,6 @@ install(
     TARGETS core
     ARCHIVE DESTINATION lib
 )
+
+create_test(core_tests core)
+set(TEST_DEPS ${TEST_DEPS} sdfas PARENT_SCOPE)
