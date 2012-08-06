@@ -6,10 +6,10 @@ namespace ci {
 namespace core {
 
 enum JobStatus {
-    UNKNOWN = 0,
-    OK,
-    FAILED,
-    ERROR
+    JOB_UNKNOWN = 0,
+    JOB_OK,
+    JOB_FAILED,
+    JOB_ERROR
 };
 
 } // namespace core
