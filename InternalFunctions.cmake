@@ -14,11 +14,8 @@ function(create_test test_name link_libs)
         ${TEST_BIN}
         gtest_main
         gmock
+        ${link_libs}
     )
-
-    foreach(lib IN LISTS ${link_libs})
-        target_link_libraries(${TEST_BIN} ${lib})
-    endforeach(lib)
 
     add_custom_target(
         ${TEST_TARGET}

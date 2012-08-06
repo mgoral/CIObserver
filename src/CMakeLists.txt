@@ -1,5 +1,14 @@
 # ----- Target: CIObserver
 
+#add_definitions(-D_UNICODE)
+find_package(wxWidgets COMPONENTS core base REQUIRED)
+include(${wxWidgets_USE_FILE})
+
+include_directories(
+    core/include
+    gui/include
+)
+
 add_subdirectory(core)
 
 set(PROJECT_SOURCE_FILES main.cpp)
@@ -9,7 +18,7 @@ add_executable(${PROJECT_BIN} ${PROJECT_SOURCE_FILES})
 target_link_libraries(${PROJECT_BIN} core)
 
 if(NOT ${CMAKE_BUILD_TYPE} MATCHES "^[A-Za-z]*Deb[A-Za-z]+$")
-    message(STATUS "Build type is '${CMAKE_BUILD_TYPE}'. Binaries will BE srtipped.")
+    message(STATUS "Build type is '${CMAKE_BUILD_TYPE}'. Binaries WILL BE srtipped.")
     set_target_properties(
         ${PROJECT_BIN} PROPERTIES
         LINK_FLAGS "-s"
