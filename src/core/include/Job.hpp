@@ -27,6 +27,7 @@ public:
     HistoryElement getHistoryElement(u32 pos) const;
     JobName getName() const;
     JobStatus getStatus() const;
+    JobTime getTime() const;
     virtual size_t getHistorySize() const;
     virtual size_t getMaxHistorySize() const;
     JobUrl getUrl() const;

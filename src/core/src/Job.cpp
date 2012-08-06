@@ -36,6 +36,10 @@ JobStatus Job::getStatus() const {
     return status.second;
 }
 
+JobTime Job::getTime() const {
+    return status.first;
+}
+
 size_t Job::getHistorySize() const {
     return history.size();
 }

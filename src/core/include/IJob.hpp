@@ -12,7 +12,8 @@ namespace ci {
 
 namespace core {
 
-typedef std::pair<wxDateTime, JobStatus> HistoryElement;
+typedef wxDateTime JobTime;
+typedef std::pair<JobTime, JobStatus> HistoryElement;
 typedef std::deque< HistoryElement > JobHistory;
 typedef wxURL JobUrl;
 
@@ -21,8 +22,6 @@ typedef wxURL JobUrl;
  */
 class IJob {
 public:
-    typedef wxDateTime JobTime;
-
     virtual ~IJob() {}
 
     /*
@@ -42,6 +41,11 @@ public:
      * @brief Return latest job status.
      */
     virtual JobStatus getStatus() const = 0;
+
+    /*
+     * @brief Return time since job status is unchanged.
+     */
+    virtual JobTime getTime() const = 0;
 
     /*
      * @brief Return job URL.
