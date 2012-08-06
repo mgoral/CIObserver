@@ -11,11 +11,11 @@ const size_t defaultHistorySize = 5;
 
 class Job : public IJob {
 private:
-    size_t maxHistorySize; /// Maximum history size. If equals 0, then history size is unlimited
     JobHistory history;
     JobName name;
-    std::pair<wxDateTime, JobStatus> status;
     JobUrl url;
+    std::pair<JobTime, JobStatus> status;
+    size_t maxHistorySize; /// Maximum history size. If equals 0, then history size is unlimited
 
 protected:
     virtual void updateHistory();
