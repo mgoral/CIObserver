@@ -7,8 +7,8 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    JobName name, JobStatus status, JobTime datetime
-) : name(name), status(datetime, status), maxHistorySize(defaultHistorySize)
+    JobName name, JobUrl url, JobStatus status, JobTime datetime
+) : name(name), url(url), status(datetime, status), maxHistorySize(defaultHistorySize)
 {}
 
 Job::~Job()
