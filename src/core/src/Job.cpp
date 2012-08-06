@@ -7,7 +7,7 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    JobName name, wxString urlStr, JobStatus status, JobTime datetime
+    JobName name, Url urlStr, JobStatus status, JobTime datetime
 ) : name(name), url(urlStr), status(datetime, status), maxHistorySize(defaultHistorySize)
 {}
 

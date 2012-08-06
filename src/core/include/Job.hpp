@@ -10,6 +10,9 @@ namespace core {
 const size_t defaultHistorySize = 5;
 
 class Job : public IJob {
+public:
+    typedef wxString Url;
+
 private:
     JobHistory history;
     JobName name;
@@ -21,7 +24,7 @@ protected:
     virtual void updateHistory();
 
 public:
-    Job(JobName name, wxString url, JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
+    Job(JobName name, Url url, JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
     virtual ~Job();
 
     HistoryElement getHistoryElement(u32 pos) const;
