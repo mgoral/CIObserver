@@ -54,19 +54,27 @@ public:
      * @param[in] datetime Time when status change occurs. Defaults to the function invocation time.
      */
     virtual void setStatus(JobStatus status, JobTime datetime = JobTime::Now()) = 0;
+
+    /*
+     * @brief Overloaded operator==()
+     */
+    bool operator ==(const IJob& other) const {
+        return other.getUrl() == getUrl();
+    }
+
+    /*
+     * @brief Overloaded operator!=()
+     */
+    bool operator !=(const IJob& other) const {
+        return !(other.getUrl() == getUrl());
+    }
 };
 
 } // namespace core
 
 } // namespace ci
 
-bool operator ==(const ci::core::IJob& first, const ci::core::IJob& second) {
-    return first.getUrl() == second.getUrl();
-}
 
-bool operator !=(const ci::core::IJob& first, const ci::core::IJob& second) {
-    return !(first.getUrl() == second.getUrl());
-}
 
 #endif
 
