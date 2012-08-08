@@ -32,7 +32,7 @@ public:
     virtual size_t getMaxHistorySize() const;
     Url getUrl() const;
     void setStatus(JobStatus newStatus, JobTime statusOccurTime = JobTime::Now());
-    virtual void setHistorySize(u32 size);
+    virtual void setMaxHistorySize(u32 size);
 };
 
 } // namespace core

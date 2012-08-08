@@ -16,14 +16,16 @@ Job::~Job()
 {}
 
 void Job::updateHistory() {
-    history.push_front(status);
-    if(maxHistorySize != 0 && history.size() > maxHistorySize) {
-        history.pop_back();
+    if(maxHistorySize > 0) {
+        history.push_front(status);
+        if(history.size() > maxHistorySize) {
+            history.pop_back();
+        }
     }
 }
 
 HistoryElement Job::getHistoryElement(u32 pos) const {
-    if(pos > history.size()) {
+    if(pos >= history.size()) {
         return HistoryElement();
     }
     return history.at(pos);
@@ -54,14 +56,14 @@ Url Job::getUrl() const {
 }
 
 void Job::setStatus(JobStatus newStatus, JobTime statusOccurTime) {
-    if(status.second != newStatus) {
+    if(status.second != newStatus && !statusOccurTime.IsEarlierThan(status.first)) {
         updateHistory();
         status.first = statusOccurTime;
         status.second = newStatus;
     }
 }
 
-void Job::setHistorySize(u32 newSize) {
+void Job::setMaxHistorySize(u32 newSize) {
     maxHistorySize = newSize;
     if(history.size() > maxHistorySize) {
         JobHistory::iterator it = history.begin();

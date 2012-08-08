@@ -13,11 +13,13 @@ namespace core {
 
 typedef wxDateTime JobTime;
 typedef std::pair<JobTime, JobStatus> HistoryElement;
-typedef std::deque< HistoryElement > JobHistory;
+typedef std::deque<HistoryElement> JobHistory;
 typedef wxString Url;
 
 /*
  * @brief Interface IJob stores and manages individual info about CI jobs and its history.
+ *        History elements are stored in chronological order. First stored element is there
+ *        earliest and the last one is the oldest (FILO - First In, Last Out).
  */
 class IJob {
 public:
