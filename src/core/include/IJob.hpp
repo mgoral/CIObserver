@@ -2,7 +2,6 @@
 #define IJOB_HPP
 
 #include <deque>
-#include <wx/url.h>
 #include <wx/datetime.h>
 
 #include "GlobalTypes.hpp"
@@ -15,7 +14,7 @@ namespace core {
 typedef wxDateTime JobTime;
 typedef std::pair<JobTime, JobStatus> HistoryElement;
 typedef std::deque< HistoryElement > JobHistory;
-typedef wxURL JobUrl;
+typedef wxString Url;
 
 /*
  * @brief Interface IJob stores and manages individual info about CI jobs and its history.
@@ -50,7 +49,7 @@ public:
     /*
      * @brief Return job URL.
      */
-    virtual JobUrl getUrl() const = 0;
+    virtual Url getUrl() const = 0;
 
     /*
      * @brief Change job status to a given one
@@ -77,7 +76,6 @@ public:
 } // namespace core
 
 } // namespace ci
-
 
 
 #endif

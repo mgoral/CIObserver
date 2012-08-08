@@ -10,13 +10,10 @@ namespace core {
 const size_t defaultHistorySize = 5;
 
 class Job : public IJob {
-public:
-    typedef wxString Url;
-
 private:
     JobHistory history;
     JobName name;
-    JobUrl url;
+    Url url;
     std::pair<JobTime, JobStatus> status;
     size_t maxHistorySize; /// Maximum history size. If equals 0, then history size is unlimited
 
@@ -33,7 +30,7 @@ public:
     JobTime getTime() const;
     virtual size_t getHistorySize() const;
     virtual size_t getMaxHistorySize() const;
-    JobUrl getUrl() const;
+    Url getUrl() const;
     void setStatus(JobStatus newStatus, JobTime statusOccurTime = JobTime::Now());
     virtual void setHistorySize(u32 size);
 };

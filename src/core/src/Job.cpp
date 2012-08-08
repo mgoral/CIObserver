@@ -1,3 +1,4 @@
+#include <iostream>
 #include <algorithm>
 
 #include "Job.hpp"
@@ -7,8 +8,8 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    JobName name, Url urlStr, JobStatus status, JobTime datetime
-) : name(name), url(urlStr), status(datetime, status), maxHistorySize(defaultHistorySize)
+    JobName name, Url url, JobStatus status, JobTime datetime
+) : name(name), url(url), status(datetime, status), maxHistorySize(defaultHistorySize)
 {}
 
 Job::~Job()
@@ -48,7 +49,7 @@ size_t Job::getMaxHistorySize() const {
     return maxHistorySize;
 }
 
-JobUrl Job::getUrl() const {
+Url Job::getUrl() const {
     return url;
 }
 
