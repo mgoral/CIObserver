@@ -56,7 +56,7 @@ public:
     /*
      * @brief Sets CI instance name
      */
-    virtual void setName() = 0;
+    virtual void setName(CIName name) = 0;
 
     /*
      * @brief Sets CI instance URL address.
