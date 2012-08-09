@@ -20,14 +20,21 @@ protected:
 };
 
 TEST_F(JobTests, JobInitializationWithAllDefaultParameters) {
-    Job job(jobName, testUrl);
+    Job job(testUrl);
+
+    ASSERT_EQ(testUrl, job.getName());
+    ASSERT_EQ(testUrl, job.getUrl());
+}
+
+TEST_F(JobTests, JobInitializationWithName) {
+    Job job(testUrl, jobName);
 
     ASSERT_EQ(jobName, job.getName());
     ASSERT_EQ(testUrl, job.getUrl());
 }
 
 TEST_F(JobTests, JobInitializationWithStatus) {
-    Job job(jobName, testUrl, JOB_FAILED);
+    Job job(testUrl, jobName, JOB_FAILED);
 
     ASSERT_EQ(jobName, job.getName());
     ASSERT_EQ(testUrl, job.getUrl());
@@ -35,7 +42,7 @@ TEST_F(JobTests, JobInitializationWithStatus) {
 }
 
 TEST_F(JobTests, JobInitializationWithStatusAndTime) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
 
     ASSERT_EQ(jobName, job.getName());
     ASSERT_EQ(testUrl, job.getUrl());
@@ -44,7 +51,7 @@ TEST_F(JobTests, JobInitializationWithStatusAndTime) {
 }
 
 TEST_F(JobTests, Copying) {
-    Job job(jobName, testUrl, JOB_OK, testDt);
+    Job job(testUrl, jobName, JOB_OK, testDt);
     JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
 
     job.setMaxHistorySize(30);
@@ -63,7 +70,7 @@ TEST_F(JobTests, Copying) {
 }
 
 TEST_F(JobTests, SettingCorrectJobStatus) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
     JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
     job.setStatus(JOB_OK, newTime);
 
@@ -72,7 +79,7 @@ TEST_F(JobTests, SettingCorrectJobStatus) {
 }
 
 TEST_F(JobTests, SettingIncorrectJobStatus) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
     JobTime newTime(31, JobTime::Mar, 2005, 22, 58, 57);
     job.setStatus(JOB_OK, newTime);
 
@@ -81,13 +88,13 @@ TEST_F(JobTests, SettingIncorrectJobStatus) {
 }
 
 TEST_F(JobTests, DefaultMaxHistorySize) {
-    Job job(jobName, testUrl);
+    Job job(testUrl, jobName);
 
     ASSERT_EQ(job.getMaxHistorySize(), defaultHistorySize);
 }
 
 TEST_F(JobTests, ChangingMaxHistorySize) {
-    Job job(jobName, testUrl);
+    Job job(testUrl, jobName);
     size_t firstExpectedMaxSize = 3;
     size_t secondExpectedMaxSize = 7;
     size_t thirdExpectedMaxSize = 0;
@@ -103,7 +110,7 @@ TEST_F(JobTests, ChangingMaxHistorySize) {
 }
 
 TEST_F(JobTests, HistorySizeAfterNotChangingJobStatus) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
     job.setStatus(JOB_FAILED);
     size_t expectedSize = 0;
 
@@ -113,7 +120,7 @@ TEST_F(JobTests, HistorySizeAfterNotChangingJobStatus) {
 TEST_F(JobTests, HistoryAfterChangingJobTwice) {
     // elements are stored in chronological order. First is the earliest, second is older and
     // last one is the oldest
-    Job job(jobName, testUrl, JOB_FAILED, testDt); // JOB_FAILED, []
+    Job job(testUrl, jobName, JOB_FAILED, testDt); // JOB_FAILED, []
 
     JobTime firstTime(31, JobTime::Mar, 2009, 22, 58, 57);
     JobTime secondTime(31, JobTime::Mar, 2010, 22, 58, 57);
@@ -131,14 +138,14 @@ TEST_F(JobTests, HistoryAfterChangingJobTwice) {
 }
 
 TEST_F(JobTests, GettingNonExistantHistoryElement) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt); // JOB_FAILED, []
+    Job job(testUrl, jobName, JOB_FAILED, testDt); // JOB_FAILED, []
 
     ASSERT_EQ(job.getHistoryElement(0), HistoryElement());
     ASSERT_EQ(job.getHistoryElement(5), HistoryElement());
 }
 
 TEST_F(JobTests, HistoryOverflow) {
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
 
     size_t maxSize = 3;
     job.setMaxHistorySize(maxSize);
@@ -174,7 +181,7 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
      * 4) changing history size to higher value than 0. New history items should be properly added
      */
 
-    Job job(jobName, testUrl, JOB_FAILED, testDt);
+    Job job(testUrl, jobName, JOB_FAILED, testDt);
 
     size_t maxSize = 5;
     job.setMaxHistorySize(maxSize);

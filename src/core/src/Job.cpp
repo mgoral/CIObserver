@@ -8,9 +8,15 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    JobName name, Url url, JobStatus status, JobTime datetime
-) : name(name), url(url), status(datetime, status), maxHistorySize(defaultHistorySize)
-{}
+    Url url, JobName newJobName, JobStatus status, JobTime datetime
+) : url(url), status(datetime, status), maxHistorySize(defaultHistorySize) {
+    if(newJobName == wxT("")) {
+        name = url;
+    }
+    else {
+        name = newJobName;
+    }
+}
 
 Job::~Job()
 {}

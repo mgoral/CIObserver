@@ -21,7 +21,7 @@ protected:
     virtual void updateHistory();
 
 public:
-    Job(JobName name, Url url, JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
+    Job(Url url, JobName newJobName = wxT(""), JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
     virtual ~Job();
 
     HistoryElement getHistoryElement(u32 pos) const;
