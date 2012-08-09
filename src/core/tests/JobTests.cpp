@@ -22,25 +22,44 @@ protected:
 TEST_F(JobTests, JobInitializationWithAllDefaultParameters) {
     Job job(jobName, testUrl);
 
-    ASSERT_TRUE(jobName.IsSameAs(job.getName()));
-    ASSERT_TRUE(testUrl.IsSameAs(job.getUrl()));
+    ASSERT_EQ(jobName, job.getName());
+    ASSERT_EQ(testUrl, job.getUrl());
 }
 
 TEST_F(JobTests, JobInitializationWithStatus) {
     Job job(jobName, testUrl, JOB_FAILED);
 
-    ASSERT_TRUE(jobName.IsSameAs(job.getName()));
-    ASSERT_TRUE(testUrl.IsSameAs(job.getUrl()));
+    ASSERT_EQ(jobName, job.getName());
+    ASSERT_EQ(testUrl, job.getUrl());
     ASSERT_EQ(JOB_FAILED, job.getStatus());
 }
 
 TEST_F(JobTests, JobInitializationWithStatusAndTime) {
     Job job(jobName, testUrl, JOB_FAILED, testDt);
 
-    ASSERT_TRUE(jobName.IsSameAs(job.getName()));
-    ASSERT_TRUE(testUrl.IsSameAs(job.getUrl()));
+    ASSERT_EQ(jobName, job.getName());
+    ASSERT_EQ(testUrl, job.getUrl());
     ASSERT_EQ(JOB_FAILED, job.getStatus());
     ASSERT_EQ(testDt, job.getTime());
+}
+
+TEST_F(JobTests, Copying) {
+    Job job(jobName, testUrl, JOB_OK, testDt);
+    JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
+
+    job.setMaxHistorySize(30);
+    job.setStatus(JOB_OK, newTime);
+    Job secondJob = job;
+
+    ASSERT_EQ(job, secondJob);
+    EXPECT_EQ(secondJob.getName(), job.getName());
+    EXPECT_EQ(secondJob.getUrl(), job.getUrl());
+    EXPECT_EQ(job.getTime(), secondJob.getTime());
+    EXPECT_EQ(job.getHistorySize(), secondJob.getHistorySize());
+    EXPECT_EQ(job.getMaxHistorySize(), secondJob.getMaxHistorySize());
+    ASSERT_EQ(job.getHistoryElement(0), secondJob.getHistoryElement(0));
+    EXPECT_EQ(job.getHistoryElement(1), secondJob.getHistoryElement(1));
+    EXPECT_EQ(job.getHistoryElement(100), secondJob.getHistoryElement(100));
 }
 
 TEST_F(JobTests, SettingCorrectJobStatus) {
