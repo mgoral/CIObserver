@@ -7,6 +7,8 @@ namespace ci {
 
 namespace core {
 
+typedef wxString CIName;
+
 /*
  * @brief Class which groups getched jobs per given Jenkins/Hudson address
  */
@@ -32,6 +34,11 @@ public:
     virtual wxString getDescription() const = 0;
 
     /*
+     * @brief Returns CI instance name
+     */
+    virtual CIName getName() const = 0;
+
+    /*
      * @brief Returns CI instance URL address.
      */
     virtual Url getUrl() const = 0;
@@ -42,12 +49,17 @@ public:
     virtual void removeJob(Url url) = 0;
 
     /*
-     * @brief Set CI instance description.
+     * @brief Sets CI instance description.
      */
     virtual void setDescription(wxString description) = 0;
 
     /*
-     * @brief Set CI instance URL address.
+     * @brief Sets CI instance name
+     */
+    virtual void setName() = 0;
+
+    /*
+     * @brief Sets CI instance URL address.
      */
     virtual void setUrl(Url url) = 0;
 };
