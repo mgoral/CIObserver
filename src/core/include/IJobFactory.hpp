@@ -9,6 +9,7 @@ namespace core {
 
 class IJobFactory {
 public:
+    virtual ~IJobFactory() {}
     virtual IJob* createJob(Url url) = 0;
     virtual IJob* createJob(Url url, JobName name) = 0;
     virtual IJob* createJob(Url url, JobName name, JobStatus status) = 0;
