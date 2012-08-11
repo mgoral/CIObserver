@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -54,9 +56,11 @@ TEST_F(JobTests, JobInitializationWithStatusAndTime) {
 TEST_F(JobTests, Copying) {
     Job job(testUrl, jobName, JOB_OK, testDt);
     JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
+    JobTime secondNewTime(31, JobTime::Mar, 2009, 22, 58, 57);
 
     job.setMaxHistorySize(30);
-    job.setStatus(JOB_OK, newTime);
+    job.setStatus(JOB_UNKNOWN, newTime);
+    job.setStatus(JOB_FAILED, secondNewTime);
     Job secondJob = job;
 
     ASSERT_EQ(job, secondJob);
@@ -67,7 +71,6 @@ TEST_F(JobTests, Copying) {
     EXPECT_EQ(job.getMaxHistorySize(), secondJob.getMaxHistorySize());
     ASSERT_EQ(job.getHistoryElement(0), secondJob.getHistoryElement(0));
     EXPECT_EQ(job.getHistoryElement(1), secondJob.getHistoryElement(1));
-    EXPECT_EQ(job.getHistoryElement(100), secondJob.getHistoryElement(100));
 }
 
 TEST_F(JobTests, SettingCorrectJobStatus) {
@@ -141,8 +144,8 @@ TEST_F(JobTests, HistoryAfterChangingJobTwice) {
 TEST_F(JobTests, GettingNonExistantHistoryElement) {
     Job job(testUrl, jobName, JOB_FAILED, testDt); // JOB_FAILED, []
 
-    ASSERT_EQ(job.getHistoryElement(0), HistoryElement());
-    ASSERT_EQ(job.getHistoryElement(5), HistoryElement());
+    ASSERT_THROW(job.getHistoryElement(0), std::out_of_range);
+    ASSERT_THROW(job.getHistoryElement(5), std::out_of_range);
 }
 
 TEST_F(JobTests, HistoryOverflow) {
@@ -170,7 +173,7 @@ TEST_F(JobTests, HistoryOverflow) {
     EXPECT_EQ(job.getHistoryElement(0), firstHistoryElement);
     EXPECT_EQ(job.getHistoryElement(1), secondHistoryElement);
     EXPECT_EQ(job.getHistoryElement(2), thirdHistoryElement);
-    EXPECT_EQ(job.getHistoryElement(3), HistoryElement());
+    ASSERT_THROW(job.getHistoryElement(3), std::out_of_range);
 }
 
 TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
@@ -217,7 +220,7 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
     EXPECT_EQ(job.getHistoryElement(3), fourthHistoryElement);
     // The rest should be empty
     for(int i = 4; i < 8; ++i) {
-        EXPECT_EQ(job.getHistoryElement(i), HistoryElement());
+        ASSERT_THROW(job.getHistoryElement(i), std::out_of_range);
     }
 
     maxSize = 3;
@@ -230,7 +233,7 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
     EXPECT_EQ(job.getHistoryElement(1), secondHistoryElement);
     EXPECT_EQ(job.getHistoryElement(2), thirdHistoryElement);
     for(int i = 3; i < 8; ++i) {
-        EXPECT_EQ(job.getHistoryElement(i), HistoryElement());
+        ASSERT_THROW(job.getHistoryElement(i), std::out_of_range);
     }
 
     maxSize = 0;    // Clears history
@@ -240,7 +243,7 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
     ASSERT_EQ(job.getHistorySize(), expectedSize);
     // No history item should be left
     for(int i = 0; i < 8; ++i) {
-        EXPECT_EQ(job.getHistoryElement(i), HistoryElement());
+        ASSERT_THROW(job.getHistoryElement(i), std::out_of_range);
     }
 
     //Check that current status is untouched
@@ -259,6 +262,6 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
 
     EXPECT_EQ(job.getHistoryElement(0), newFirstHistoryElement);
     for(int i = 1; i < 8; ++i) {
-        EXPECT_EQ(job.getHistoryElement(i), HistoryElement());
+        ASSERT_THROW(job.getHistoryElement(i), std::out_of_range);
     }
 }
