@@ -72,6 +72,14 @@ public:
     bool operator !=(const IJob& other) const {
         return !(other.getUrl() == getUrl());
     }
+
+    /*
+     * @brief Overloaded operator<()
+     *        Reason: strict weak ordering.
+     */
+    bool operator <(const IJob& other) const {
+        return getUrl() < other.getUrl();
+    }
 };
 
 } // namespace core
