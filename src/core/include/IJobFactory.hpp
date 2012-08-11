@@ -11,9 +11,9 @@ class IJobFactory {
 public:
     virtual ~IJobFactory() {}
     virtual IJob* createJob(Url url) = 0;
-    virtual IJob* createJob(Url url, JobName name) = 0;
-    virtual IJob* createJob(Url url, JobName name, JobStatus status) = 0;
-    virtual IJob* createJob(Url url, JobName name, JobStatus status, JobTime time) = 0;
+    virtual IJob* createJob(Url url, Name name) = 0;
+    virtual IJob* createJob(Url url, Name name, JobStatus status) = 0;
+    virtual IJob* createJob(Url url, Name name, JobStatus status, JobTime time) = 0;
 };
 
 } // namespace core
