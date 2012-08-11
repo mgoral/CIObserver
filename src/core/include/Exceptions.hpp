@@ -7,7 +7,7 @@
 
 namespace ci {
 
-class BadParameter : public std::invalid_argument {
+class bad_parameter : public std::invalid_argument {
 public:
     explicit BadParameter()
         : std::runtime_error("Incorrect parameter given.");
