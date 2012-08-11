@@ -1,10 +1,12 @@
 #include "JobManager.hpp"
+#include "Job.hpp"
 
 namespace ci {
 
 namespace core {
 
-JobManager::JobManager(Url url, CIName setName) : url(url) {
+JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, Url url, Name setName)
+: jobFactory(jobFactory), url(url) {
     if(setName.IsSameAs(wxT(""))) {
         name = url;
     }
@@ -13,33 +15,57 @@ JobManager::JobManager(Url url, CIName setName) : url(url) {
     }
 }
 
-JobManager::JobManager(const JobManager& copy) {
-
-}
+//JobManager::JobManager(const JobManager& copy) { } // TODO: implement if default copy ctor is not sufficient
 
 JobManager::~JobManager() {}
 
-//JobVector::iterator JobManager::findJob(Url url) {}
+void JobManager::addJob(Url url, Name name,JobStatus status) {
+    IJobPtr newJob(jobFactory->createJob(url, name, status));
+    jobs.insert(newJob);
+}
 
-//JobVector::iterator JobManager::findJob(Url url) const {}
+IJobPtr JobManager::getJob(Url url) const {
+    IJobPtr tempJob(jobFactory->createJob(url));
+    JobCollection::const_iterator it = jobs.find(tempJob);
 
-void JobManager::addJob(JobName name, Url url, JobStatus status) {}
+    if(it != jobs.end()) {
+        return *it;
+    }
+    return IJobPtr();
+}
 
-// IJob& JobManager::getJob(Url url) const {}
+Description JobManager::getDescription() const {
+    return description;
+}
 
-// wxString JobManager::getDescription() const {}
+Name JobManager::getName() const {
+    return name;
+}
 
-//CIName JobManager::getName() const {}
+Url JobManager::getUrl() const {
+    return url;
+}
 
-//Url JobManager::getUrl() const {}
+void JobManager::removeJob(Url url) {
+    IJobPtr tempJob(jobFactory->createJob(url));
+    jobs.erase(tempJob);
+}
 
-void JobManager::removeJob(Url url) {}
+void JobManager::setDescription(wxString newDescription) {
+    description = newDescription;
+}
 
-void JobManager::setDescription(wxString description) {}
+void JobManager::setName(Name newName) {
+    name = newName;
+}
 
-void JobManager::setName(CIName name) {}
-
-void JobManager::setUrl(Url url) {}
+bool JobManager::setUrl(Url newUrl) {
+    if(newUrl.StartsWith(wxT("http://"))) {
+        url = newUrl;
+        return true;
+    }
+    return false;
+}
 
 void JobManager::operator ()() {}
 

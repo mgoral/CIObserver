@@ -1,10 +1,12 @@
 #ifndef JOBMANAGER_HPP
 #define JOBMANAGER_HPP
 
-#include <vector>
+#include <memory>
+#include <set>
 
 #include "IJob.hpp"
 #include "IJobManager.hpp"
+#include "IJobFactory.hpp"
 
 namespace ci {
 
@@ -12,39 +14,29 @@ namespace core {
 
 class JobManager : public IJobManager {
 private:
-    typedef std::vector<IJob> JobVector;
+    typedef std::set<IJobPtr> JobCollection;
+    typedef std::shared_ptr<IJobFactory> IJobFactoryPtr;
 
-    CIName name;
-    wxString description;
+    IJobFactoryPtr jobFactory;
+    Name name;
+    Description description;
     Url url;
-    JobVector jobs;
-
-protected:
-    /*
-     * @brief Finds if there is added a job with a given URL in JobVector.
-     */
-    JobVector::iterator findJob(Url url);
-
-    /*
-     * @brief Finds if there is added a job with a given URL in JobVector.
-     *        Const version.
-     */
-    JobVector::const_iterator findJob(Url url) const;
+    JobCollection jobs;
 
 public:
-    JobManager(Url url, CIName setName = wxT(""));
-    JobManager(const JobManager& copy);
+    JobManager(IJobFactoryPtr jobFactory, Url url, Name setName = wxT(""));
+    //JobManager(const JobManager& copy); // TODO: implement if default copy ctor is not sufficient
     ~JobManager();
 
-    void addJob(JobName name, Url url, JobStatus status);
-    IJob& getJob(Url url) const;
-    wxString getDescription() const;
-    CIName getName() const;
+    void addJob(Url url, Name name, JobStatus status);
+    IJobPtr getJob(Url url) const;
+    Description getDescription() const;
+    Name getName() const;
     Url getUrl() const;
     void removeJob(Url url);
-    void setDescription(wxString description);
-    void setName(CIName name);
-    void setUrl(Url url);
+    void setDescription(Description newDescription);
+    void setName(Name newName);
+    bool setUrl(Url newUrl);
 
     void operator ()();
 };
