@@ -3,7 +3,7 @@
 namespace ci {
 namespace core {
 
-class MockIJob : public IJob {
+class IJobMock : public IJob {
 public:
     MOCK_CONST_METHOD1(getHistoryElement,
         HistoryElement(u32 pos));

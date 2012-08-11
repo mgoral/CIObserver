@@ -3,7 +3,7 @@
 namespace ci {
 namespace core {
 
-class MockIJobFactory : public IJobFactory {
+class IJobFactoryMock : public IJobFactory {
 public:
     MOCK_METHOD1(createJob,
         IJob*(Url url));
