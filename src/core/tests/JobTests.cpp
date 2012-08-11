@@ -14,7 +14,7 @@ protected:
         testUrl = wxT("http://example.com");
     }
 
-    JobName jobName;
+    Name jobName;
     JobTime testDt;
     Url testUrl;
 };

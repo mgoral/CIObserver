@@ -11,9 +11,9 @@ class JobFactory : public IJobFactory {
 public:
     ~JobFactory();
     IJob* createJob(Url url);
-    IJob* createJob(Url url, JobName name);
-    IJob* createJob(Url url, JobName name, JobStatus status);
-    IJob* createJob(Url url, JobName name, JobStatus status, JobTime time);
+    IJob* createJob(Url url, Name name);
+    IJob* createJob(Url url, Name name, JobStatus status);
+    IJob* createJob(Url url, Name name, JobStatus status, JobTime time);
 };
 
 } // namespace core

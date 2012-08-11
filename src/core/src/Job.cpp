@@ -8,13 +8,13 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    Url url, JobName newJobName, JobStatus status, JobTime datetime
+    Url url, Name newName, JobStatus status, JobTime datetime
 ) : url(url), status(datetime, status), maxHistorySize(defaultHistorySize) {
-    if(newJobName == wxT("")) {
+    if(newName == wxT("")) {
         name = url;
     }
     else {
-        name = newJobName;
+        name = newName;
     }
 }
 
@@ -37,7 +37,7 @@ HistoryElement Job::getHistoryElement(u32 pos) const {
     return history.at(pos);
 }
 
-JobName Job::getName() const {
+Name Job::getName() const {
     return name;
 }
 

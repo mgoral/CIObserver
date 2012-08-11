@@ -13,7 +13,9 @@ typedef signed short s16;
 typedef signed int s32;
 typedef signed long long s64;
 
-typedef wxString JobName;
+typedef wxString Name;
+typedef wxString Description;
+typedef wxString Url;
 
 #endif
 

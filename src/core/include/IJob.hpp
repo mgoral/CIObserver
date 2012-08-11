@@ -14,7 +14,6 @@ namespace core {
 typedef wxDateTime JobTime;
 typedef std::pair<JobTime, JobStatus> HistoryElement;
 typedef std::deque<HistoryElement> JobHistory;
-typedef wxString Url;
 
 /*
  * @brief Interface IJob stores and manages individual info about CI jobs and its history.
@@ -36,7 +35,7 @@ public:
     /*
      * @brief Return job name known from the parsed XML.
      */
-    virtual JobName getName() const = 0;
+    virtual Name getName() const = 0;
 
     /*
      * @brief Return latest job status.

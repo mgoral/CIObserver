@@ -12,7 +12,7 @@ const size_t defaultHistorySize = 5;
 class Job : public IJob {
 private:
     JobHistory history;
-    JobName name;
+    Name name;
     Url url;
     std::pair<JobTime, JobStatus> status;
     size_t maxHistorySize; /// Maximum history size. If equals 0, then history size is unlimited
@@ -21,11 +21,11 @@ protected:
     virtual void updateHistory();
 
 public:
-    Job(Url url, JobName newJobName = wxT(""), JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
+    Job(Url url, Name newName = wxT(""), JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
     virtual ~Job();
 
     HistoryElement getHistoryElement(u32 pos) const;
-    JobName getName() const;
+    Name getName() const;
     JobStatus getStatus() const;
     JobTime getTime() const;
     virtual size_t getHistorySize() const;
