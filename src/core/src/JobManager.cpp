@@ -1,3 +1,6 @@
+#include <wx/intl.h>
+
+#include "Exceptions.hpp"
 #include "JobManager.hpp"
 #include "Job.hpp"
 
@@ -5,13 +8,16 @@ namespace ci {
 
 namespace core {
 
-JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& url, const Name& setName)
+JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUrl, const Name& newName)
 : jobFactory(jobFactory) {
-    if(setName.IsSameAs(wxT(""))) {
-        name = url;
+    if(!setUrl(newUrl)) {
+        throw bad_parameter(_("JobManager incorrect URL"));
+    }
+    if(newName.IsSameAs(wxT(""))) {
+        name = newUrl;
     }
     else {
-        name = setName;
+        name = newName;
     }
 }
 
@@ -60,7 +66,7 @@ void JobManager::setName(const Name& newName) {
 }
 
 bool JobManager::setUrl(const Url& newUrl) {
-    if(newUrl.StartsWith(wxT("http://"))) {
+    if(newUrl.StartsWith(wxT("http://")) || newUrl.StartsWith(wxT("https://"))) {
         url = newUrl;
         return true;
     }
