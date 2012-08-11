@@ -4,6 +4,7 @@
 #include "Job.hpp"
 
 using namespace testing;
+using namespace ci;
 using namespace ci::core;
 
 class JobTests : public Test {
