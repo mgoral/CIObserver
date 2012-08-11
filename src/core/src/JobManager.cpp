@@ -5,8 +5,8 @@ namespace ci {
 
 namespace core {
 
-JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, Url url, Name setName)
-: jobFactory(jobFactory), url(url) {
+JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& url, const Name& setName)
+: jobFactory(jobFactory) {
     if(setName.IsSameAs(wxT(""))) {
         name = url;
     }
@@ -19,12 +19,12 @@ JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, Url url, Name se
 
 JobManager::~JobManager() {}
 
-void JobManager::addJob(Url url, Name name,JobStatus status) {
+void JobManager::addJob(const Url& url, const Name& name, JobStatus status) {
     IJobPtr newJob(jobFactory->createJob(url, name, status));
     jobs.insert(newJob);
 }
 
-IJobPtr JobManager::getJob(Url url) const {
+IJobPtr JobManager::getJob(const Url& url) const {
     IJobPtr tempJob(jobFactory->createJob(url));
     JobCollection::const_iterator it = jobs.find(tempJob);
 
@@ -34,32 +34,32 @@ IJobPtr JobManager::getJob(Url url) const {
     return IJobPtr();
 }
 
-Description JobManager::getDescription() const {
+const Description& JobManager::getDescription() const {
     return description;
 }
 
-Name JobManager::getName() const {
+const Name& JobManager::getName() const {
     return name;
 }
 
-Url JobManager::getUrl() const {
+const Url& JobManager::getUrl() const {
     return url;
 }
 
-void JobManager::removeJob(Url url) {
+void JobManager::removeJob(const Url& url) {
     IJobPtr tempJob(jobFactory->createJob(url));
     jobs.erase(tempJob);
 }
 
-void JobManager::setDescription(wxString newDescription) {
+void JobManager::setDescription(const Description& newDescription) {
     description = newDescription;
 }
 
-void JobManager::setName(Name newName) {
+void JobManager::setName(const Name& newName) {
     name = newName;
 }
 
-bool JobManager::setUrl(Url newUrl) {
+bool JobManager::setUrl(const Url& newUrl) {
     if(newUrl.StartsWith(wxT("http://"))) {
         url = newUrl;
         return true;

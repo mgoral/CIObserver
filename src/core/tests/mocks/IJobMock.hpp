@@ -1,3 +1,6 @@
+#ifndef IJOBMOCK_HPP
+#define IJOBMOCK_HPP
+
 #include "IJob.hpp"
 
 namespace ci {
@@ -6,19 +9,21 @@ namespace core {
 class IJobMock : public IJob {
 public:
     MOCK_CONST_METHOD1(getHistoryElement,
-        HistoryElement(u32 pos));
+        const HistoryElement&(u32 pos));
     MOCK_CONST_METHOD0(getName,
-        Name());
+        const Name&());
     MOCK_CONST_METHOD0(getStatus,
         JobStatus());
     MOCK_CONST_METHOD0(getTime,
-        JobTime());
+        const JobTime&());
     MOCK_CONST_METHOD0(getUrl,
-        Url());
+        const Url&());
     MOCK_METHOD2(setStatus,
-        void(JobStatus status, JobTime datetime));
+        void(JobStatus status, const JobTime& datetime));
 };
 
 }  // namespace core
 }  // namespace ci
+
+#endif
 

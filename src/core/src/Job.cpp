@@ -8,7 +8,7 @@ namespace ci {
 namespace core {
 
 Job::Job(
-    Url url, Name newName, JobStatus status, JobTime datetime
+    const Url& url, const Name& newName, JobStatus status, const JobTime& datetime
 ) : url(url), status(datetime, status), maxHistorySize(defaultHistorySize) {
     if(newName == wxT("")) {
         name = url;
@@ -30,14 +30,11 @@ void Job::updateHistory() {
     }
 }
 
-HistoryElement Job::getHistoryElement(u32 pos) const {
-    if(pos >= history.size()) {
-        return HistoryElement();
-    }
+const HistoryElement& Job::getHistoryElement(u32 pos) const {
     return history.at(pos);
 }
 
-Name Job::getName() const {
+const Name& Job::getName() const {
     return name;
 }
 
@@ -45,7 +42,7 @@ JobStatus Job::getStatus() const {
     return status.second;
 }
 
-JobTime Job::getTime() const {
+const JobTime& Job::getTime() const {
     return status.first;
 }
 
@@ -57,11 +54,11 @@ size_t Job::getMaxHistorySize() const {
     return maxHistorySize;
 }
 
-Url Job::getUrl() const {
+const Url& Job::getUrl() const {
     return url;
 }
 
-void Job::setStatus(JobStatus newStatus, JobTime statusOccurTime) {
+void Job::setStatus(JobStatus newStatus, const JobTime& statusOccurTime) {
     if(status.second != newStatus && !statusOccurTime.IsEarlierThan(status.first)) {
         updateHistory();
         status.first = statusOccurTime;

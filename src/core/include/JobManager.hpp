@@ -13,9 +13,11 @@ namespace ci {
 namespace core {
 
 class JobManager : public IJobManager {
+public:
+    typedef std::shared_ptr<IJobFactory> IJobFactoryPtr;
+
 private:
     typedef std::set<IJobPtr> JobCollection;
-    typedef std::shared_ptr<IJobFactory> IJobFactoryPtr;
 
     IJobFactoryPtr jobFactory;
     Name name;
@@ -24,21 +26,22 @@ private:
     JobCollection jobs;
 
 public:
-    JobManager(IJobFactoryPtr jobFactory, Url url, Name setName = wxT(""));
+    JobManager(IJobFactoryPtr jobFactory, const Url& url, const Name& setName = wxT(""));
     //JobManager(const JobManager& copy); // TODO: implement if default copy ctor is not sufficient
     ~JobManager();
 
-    void addJob(Url url, Name name, JobStatus status);
-    IJobPtr getJob(Url url) const;
-    Description getDescription() const;
-    Name getName() const;
-    Url getUrl() const;
-    void removeJob(Url url);
-    void setDescription(Description newDescription);
-    void setName(Name newName);
-    bool setUrl(Url newUrl);
+    void addJob(const Url& url, const Name& name, JobStatus status);
+    IJobPtr getJob(const Url& url) const;
+    const Description& getDescription() const;
+    const Name& getName() const;
+    const Url& getUrl() const;
+    void removeJob(const Url& url);
+    void setDescription(const Description& newDescription);
+    void setName(const Name& newName);
+    bool setUrl(const Url& newUrl);
 
     void operator ()();
+
 };
 
 } // namespace core

@@ -6,13 +6,14 @@ namespace core {
 class IJobFactoryMock : public IJobFactory {
 public:
     MOCK_METHOD1(createJob,
-        IJob*(Url url));
+        IJob*(const Url& url));
     MOCK_METHOD2(createJob,
-        IJob*(Url url, Name name));
+        IJob*(const Url& url, const Name& name));
     MOCK_METHOD3(createJob,
-        IJob*(Url url, Name name, JobStatus status));
+        IJob*(const Url& url, const Name& name, JobStatus status));
     MOCK_METHOD4(createJob,
-        IJob*(Url url, Name name, JobStatus status, JobTime time));
+        IJob*(const Url& url, const Name& name, JobStatus status, const JobTime& time));
+
 };
 
 }  // namespace core

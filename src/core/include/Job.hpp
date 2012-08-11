@@ -21,17 +21,17 @@ protected:
     virtual void updateHistory();
 
 public:
-    Job(Url url, Name newName = wxT(""), JobStatus status = JOB_UNKNOWN, JobTime datetime = JobTime::Now());
+    Job(const Url& url, const Name& newName = wxT(""), JobStatus status = JOB_UNKNOWN, const JobTime& datetime = JobTime::Now());
     virtual ~Job();
 
-    HistoryElement getHistoryElement(u32 pos) const;
-    Name getName() const;
+    const HistoryElement& getHistoryElement(u32 pos) const;
+    const Name& getName() const;
     JobStatus getStatus() const;
-    JobTime getTime() const;
+    const JobTime& getTime() const;
     virtual size_t getHistorySize() const;
     virtual size_t getMaxHistorySize() const;
-    Url getUrl() const;
-    void setStatus(JobStatus newStatus, JobTime statusOccurTime = JobTime::Now());
+    const Url& getUrl() const;
+    void setStatus(JobStatus newStatus, const JobTime& statusOccurTime = JobTime::Now());
     virtual void setMaxHistorySize(u32 size);
 };
 

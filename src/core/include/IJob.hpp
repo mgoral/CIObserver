@@ -30,12 +30,12 @@ public:
      * @return HistoryElement or there is no HistoryElement at given position, default HistoryElement constructed
      *         from default constructor
      */
-    virtual HistoryElement getHistoryElement(u32 pos) const = 0;
+    virtual const HistoryElement& getHistoryElement(u32 pos) const = 0;
 
     /*
      * @brief Return job name known from the parsed XML.
      */
-    virtual Name getName() const = 0;
+    virtual const Name& getName() const = 0;
 
     /*
      * @brief Return latest job status.
@@ -45,19 +45,19 @@ public:
     /*
      * @brief Return time since job status is unchanged.
      */
-    virtual JobTime getTime() const = 0;
+    virtual const JobTime& getTime() const = 0;
 
     /*
      * @brief Return job URL.
      */
-    virtual Url getUrl() const = 0;
+    virtual const Url& getUrl() const = 0;
 
     /*
      * @brief Change job status to a given one
      * @param[in] status Job status to be setStatus
      * @param[in] datetime Time when status change occurs. Defaults to the function invocation time.
      */
-    virtual void setStatus(JobStatus status, JobTime datetime = JobTime::Now()) = 0;
+    virtual void setStatus(JobStatus status, const JobTime& datetime = JobTime::Now()) = 0;
 
     /*
      * @brief Overloaded operator==()

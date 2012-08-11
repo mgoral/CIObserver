@@ -10,10 +10,10 @@ namespace core {
 class JobFactory : public IJobFactory {
 public:
     ~JobFactory();
-    IJob* createJob(Url url);
-    IJob* createJob(Url url, Name name);
-    IJob* createJob(Url url, Name name, JobStatus status);
-    IJob* createJob(Url url, Name name, JobStatus status, JobTime time);
+    IJob* createJob(const Url& url);
+    IJob* createJob(const Url& url, const Name& name);
+    IJob* createJob(const Url& url, const Name& name, JobStatus status);
+    IJob* createJob(const Url& url, const Name& name, JobStatus status, const JobTime& time);
 };
 
 } // namespace core
