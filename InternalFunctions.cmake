@@ -5,6 +5,7 @@ function(create_test test_name link_libs)
     include_directories(
         ${PROJECT_SOURCE_DIR}/thirdparty/gmock/include
         ${PROJECT_SOURCE_DIR}/thirdparty/gmock/gtest/include
+        tests/mocks
     )
 
     file(GLOB_RECURSE TEST_SOURCES tests/*.cpp)
