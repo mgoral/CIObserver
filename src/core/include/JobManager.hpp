@@ -17,7 +17,15 @@ public:
     typedef std::shared_ptr<IJobFactory> IJobFactoryPtr;
 
 private:
-    typedef std::set<IJobPtr> JobCollection;
+    /*
+     * @brief Compare class to avoid comparing shared_ptrs in JobCollection.
+     */
+    struct comp {
+        bool operator()(const IJobPtr& lhs, const IJobPtr& rhs) const {
+            return *lhs < * rhs;
+        }
+    };
+    typedef std::set<IJobPtr, comp> JobCollection;
 
     IJobFactoryPtr jobFactory;
     Name name;
