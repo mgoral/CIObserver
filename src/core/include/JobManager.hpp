@@ -26,7 +26,7 @@ private:
     JobCollection jobs;
 
 public:
-    JobManager(IJobFactoryPtr jobFactory, const Url& url, const Name& setName = wxT(""));
+    JobManager(IJobFactoryPtr jobFactory, const Url& url, const Name& setName = "");
     //JobManager(const JobManager& copy); // TODO: implement if default copy ctor is not sufficient
     ~JobManager();
 

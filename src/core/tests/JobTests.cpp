@@ -11,10 +11,11 @@ using namespace ci::core;
 
 class JobTests : public Test {
 protected:
+    JobTests() : testDt(2007, JobTime::FEBRUARY, 10, 23, 59, 59) {}
+
     virtual void SetUp() {
-        jobName = wxT("FooJob");
-        testDt.Set(10, JobTime::Feb, 2007, 23, 59, 59);
-        testUrl = wxT("http://example.com");
+        jobName = "FooJob";
+        testUrl = "http://example.com";
     }
 
     Name jobName;
@@ -55,8 +56,8 @@ TEST_F(JobTests, JobInitializationWithStatusAndTime) {
 
 TEST_F(JobTests, Copying) {
     Job job(testUrl, jobName, JOB_OK, testDt);
-    JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
-    JobTime secondNewTime(31, JobTime::Mar, 2009, 22, 58, 57);
+    JobTime newTime(2008, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime secondNewTime(2009, JobTime::MARCH, 31, 22, 58, 57);
 
     job.setMaxHistorySize(30);
     job.setStatus(JOB_UNKNOWN, newTime);
@@ -75,7 +76,7 @@ TEST_F(JobTests, Copying) {
 
 TEST_F(JobTests, SettingCorrectJobStatus) {
     Job job(testUrl, jobName, JOB_FAILED, testDt);
-    JobTime newTime(31, JobTime::Mar, 2008, 22, 58, 57);
+    JobTime newTime(2008, JobTime::MARCH, 31, 22, 58, 57);
     job.setStatus(JOB_OK, newTime);
 
     ASSERT_EQ(JOB_OK, job.getStatus());
@@ -84,7 +85,7 @@ TEST_F(JobTests, SettingCorrectJobStatus) {
 
 TEST_F(JobTests, SettingIncorrectJobStatus) {
     Job job(testUrl, jobName, JOB_FAILED, testDt);
-    JobTime newTime(31, JobTime::Mar, 2005, 22, 58, 57);
+    JobTime newTime(2005, JobTime::MARCH, 31, 22, 58, 57);
     job.setStatus(JOB_OK, newTime);
 
     ASSERT_EQ(JOB_FAILED, job.getStatus());
@@ -126,8 +127,8 @@ TEST_F(JobTests, HistoryAfterChangingJobTwice) {
     // last one is the oldest
     Job job(testUrl, jobName, JOB_FAILED, testDt); // JOB_FAILED, []
 
-    JobTime firstTime(31, JobTime::Mar, 2009, 22, 58, 57);
-    JobTime secondTime(31, JobTime::Mar, 2010, 22, 58, 57);
+    JobTime firstTime(2009, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime secondTime(2010, JobTime::MARCH, 31, 22, 58, 57);
 
     job.setStatus(JOB_OK, firstTime);       // JOB_OK,      [JOB_FAILED]
     job.setStatus(JOB_UNKNOWN, secondTime); // JOB_UNKNOWN, [JOB_OK, JOB_FAILED]
@@ -155,10 +156,10 @@ TEST_F(JobTests, HistoryOverflow) {
     job.setMaxHistorySize(maxSize);
     ASSERT_EQ(job.getMaxHistorySize(), maxSize);
 
-    JobTime firstTime(31, JobTime::Mar, 2009, 22, 58, 57);
-    JobTime secondTime(31, JobTime::Mar, 2010, 22, 58, 57);
-    JobTime thirdTime(31, JobTime::Mar, 2011, 22, 58, 57);
-    JobTime fourthTime(31, JobTime::Mar, 2012, 22, 58, 57);
+    JobTime firstTime(2009, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime secondTime(2010, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime thirdTime(2011, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime fourthTime(2012, JobTime::MARCH, 31, 22, 58, 57);
 
     job.setStatus(JOB_OK, firstTime);
     job.setStatus(JOB_UNKNOWN, secondTime);
@@ -191,11 +192,11 @@ TEST_F(JobTests, ChangingHistorySizeWhenHistoryIsNotEmpty) {
     job.setMaxHistorySize(maxSize);
     ASSERT_EQ(job.getMaxHistorySize(), maxSize);
 
-    JobTime firstTime(31, JobTime::Mar, 2009, 22, 58, 57);
-    JobTime secondTime(31, JobTime::Mar, 2010, 22, 58, 57);
-    JobTime thirdTime(31, JobTime::Mar, 2011, 22, 58, 57);
-    JobTime fourthTime(31, JobTime::Mar, 2012, 22, 58, 57);
-    JobTime fifthTime(31, JobTime::Mar, 2013, 22, 58, 57);
+    JobTime firstTime(2009, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime secondTime(2010, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime thirdTime(2011, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime fourthTime(2012, JobTime::MARCH, 31, 22, 58, 57);
+    JobTime fifthTime(2013, JobTime::MARCH, 31, 22, 58, 57);
 
     HistoryElement firstHistoryElement(thirdTime, JOB_FAILED);
     HistoryElement secondHistoryElement(secondTime, JOB_UNKNOWN);

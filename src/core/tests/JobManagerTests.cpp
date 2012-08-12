@@ -17,8 +17,8 @@ class JobManagerTests : public Test {
 protected:
     virtual void SetUp() {
         testJobFactory.reset(new IJobFactoryMock());
-        url = wxT("http://example.com");
-        name = wxT("FooManagerName");
+        url = "http://example.com";
+        name = "FooManagerName";
     }
 
     JobManager::IJobFactoryPtr testJobFactory;
@@ -40,7 +40,7 @@ TEST_F(JobManagerTests, CreatingWithAGivenName) {
 }
 
 TEST_F(JobManagerTests, CreatingWithWrongURL) {
-    Url wrongUrl = wxT("WrongUrl");
+    Url wrongUrl = "WrongUrl";
 
     ASSERT_THROW(JobManager(testJobFactory, wrongUrl), bad_parameter);
 }

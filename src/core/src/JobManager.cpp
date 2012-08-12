@@ -1,5 +1,3 @@
-#include <wx/intl.h>
-
 #include "Exceptions.hpp"
 #include "JobManager.hpp"
 #include "Job.hpp"
@@ -13,7 +11,7 @@ JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUr
     if(!setUrl(newUrl)) {
         throw bad_parameter(_("JobManager incorrect URL"));
     }
-    if(newName.IsSameAs(wxT(""))) {
+    if("" == newName) {
         name = newUrl;
     }
     else {
@@ -66,7 +64,7 @@ void JobManager::setName(const Name& newName) {
 }
 
 bool JobManager::setUrl(const Url& newUrl) {
-    if(newUrl.StartsWith(wxT("http://")) || newUrl.StartsWith(wxT("https://"))) {
+    if(newUrl.substr(0,7) == "http://" || newUrl.substr(0, 8) == "https://") {
         url = newUrl;
         return true;
     }

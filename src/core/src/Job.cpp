@@ -10,7 +10,7 @@ namespace core {
 Job::Job(
     const Url& url, const Name& newName, JobStatus status, const JobTime& datetime
 ) : url(url), status(datetime, status), maxHistorySize(defaultHistorySize) {
-    if(newName == wxT("")) {
+    if(newName == "") {
         name = url;
     }
     else {
@@ -59,7 +59,7 @@ const Url& Job::getUrl() const {
 }
 
 void Job::setStatus(JobStatus newStatus, const JobTime& statusOccurTime) {
-    if(status.second != newStatus && !statusOccurTime.IsEarlierThan(status.first)) {
+    if(status.second != newStatus && statusOccurTime > status.first) {
         updateHistory();
         status.first = statusOccurTime;
         status.second = newStatus;

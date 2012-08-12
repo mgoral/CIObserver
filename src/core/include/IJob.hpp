@@ -2,16 +2,16 @@
 #define IJOB_HPP
 
 #include <deque>
-#include <wx/datetime.h>
+#include <Poco/DateTime.h>
 
-#include "GlobalTypes.hpp"
+#include "GlobalDefs.hpp"
 #include "JobStatus.hpp"
 
 namespace ci {
 
 namespace core {
 
-typedef wxDateTime JobTime;
+typedef Poco::DateTime JobTime;
 typedef std::pair<JobTime, JobStatus> HistoryElement;
 typedef std::deque<HistoryElement> JobHistory;
 
@@ -57,7 +57,7 @@ public:
      * @param[in] status Job status to be setStatus
      * @param[in] datetime Time when status change occurs. Defaults to the function invocation time.
      */
-    virtual void setStatus(JobStatus status, const JobTime& datetime = JobTime::Now()) = 0;
+    virtual void setStatus(JobStatus status, const JobTime& datetime) = 0;
 
     /*
      * @brief Overloaded operator==()

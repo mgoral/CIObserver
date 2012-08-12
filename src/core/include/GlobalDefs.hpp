@@ -1,7 +1,10 @@
-#ifndef GLOBALTYPES_HPP
-#define GLOBALTYPES_HPP
+#ifndef GLOBALDEFS_HPP
+#define GLOBALDEFS_HPP
 
-#include <wx/string.h>
+#include <libintl.h>
+#include <glibmm/ustring.h>
+
+#define _(String) gettext(String)
 
 typedef unsigned char u8;
 typedef unsigned short u16;
@@ -15,9 +18,9 @@ typedef signed long long s64;
 
 namespace ci {
 
-typedef wxString Name;
-typedef wxString Description;
-typedef wxString Url;
+typedef Glib::ustring Name;
+typedef Glib::ustring Description;
+typedef Glib::ustring Url;
 
 } // namespace ci
 

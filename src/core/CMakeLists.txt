@@ -1,11 +1,11 @@
 file(GLOB_RECURSE CORE_SOURCE_FILES src/*.cpp)
 
-# wxWidgets specific
-find_package(wxWidgets COMPONENTS core base net xml REQUIRED)
-include(${wxWidgets_USE_FILE})
-
 add_library(core STATIC ${CORE_SOURCE_FILES})
-target_link_libraries(core ${wxWidgets_LIBRARIES})
+target_link_libraries(
+    core
+    ${GTK2_LIBRARIES}
+    ${POCO_FOUNDATION}
+)
 
 install(
     TARGETS core

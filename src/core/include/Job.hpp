@@ -21,7 +21,7 @@ protected:
     virtual void updateHistory();
 
 public:
-    Job(const Url& url, const Name& newName = wxT(""), JobStatus status = JOB_UNKNOWN, const JobTime& datetime = JobTime::Now());
+    Job(const Url& url, const Name& newName = "", JobStatus status = JOB_UNKNOWN, const JobTime& datetime = JobTime());
     virtual ~Job();
 
     const HistoryElement& getHistoryElement(u32 pos) const;
@@ -31,7 +31,7 @@ public:
     virtual size_t getHistorySize() const;
     virtual size_t getMaxHistorySize() const;
     const Url& getUrl() const;
-    void setStatus(JobStatus newStatus, const JobTime& statusOccurTime = JobTime::Now());
+    void setStatus(JobStatus newStatus, const JobTime& statusOccurTime = JobTime());
     virtual void setMaxHistorySize(u32 size);
 };
 
