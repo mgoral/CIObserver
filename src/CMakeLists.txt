@@ -1,9 +1,3 @@
-# ----- Target: CIObserver
-
-#add_definitions(-D_UNICODE)
-#find_package(wxWidgets COMPONENTS core base REQUIRED)
-#include(${wxWidgets_USE_FILE})
-
 find_package(GTK2 2.4 REQUIRED gtk gtkmm)
 
 find_poco()
