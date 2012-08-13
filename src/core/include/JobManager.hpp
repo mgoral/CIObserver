@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <set>
+#include <Poco/Logger.h>
 
 #include "IJob.hpp"
 #include "IJobManager.hpp"
@@ -32,6 +33,7 @@ private:
     Description description;
     Url url;
     JobCollection jobs;
+    Poco::Logger& logger;
 
 protected:
     bool setUrl(const Url& newUrl);
