@@ -27,8 +27,8 @@ public:
     /*
      * @brief Return a History Element
      * @param[in] pos Number of element to return
-     * @return HistoryElement or there is no HistoryElement at given position, default HistoryElement constructed
-     *         from default constructor
+     * @return HistoryElement or there is no HistoryElement at given position, default HistoryElement
+     *         constructed from default constructor
      */
     virtual const HistoryElement& getHistoryElement(u32 pos) const = 0;
 
