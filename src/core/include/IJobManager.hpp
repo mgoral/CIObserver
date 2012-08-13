@@ -30,8 +30,7 @@ public:
     virtual IJobPtr getJob(const Url& url) const = 0;
 
     /*
-     * @brief Returns CI instance description (usually provided by a user but
-     *        also may be fetched from XML API)
+     * @brief Returns CI instance description (usually provided by a user but also may be fetched from XML API)
      */
     virtual const Description& getDescription() const = 0;
 
@@ -59,12 +58,6 @@ public:
      * @brief Sets CI instance name
      */
     virtual void setName(const Name& name) = 0;
-
-    /*
-     * @brief Sets CI instance URL address. This function provides basic url check.
-     * @return true, if url was set succesfully; false otherwise
-     */
-    virtual bool setUrl(const Url& url) = 0;
 };
 
 } // namespace core

@@ -33,6 +33,9 @@ private:
     Url url;
     JobCollection jobs;
 
+protected:
+    bool setUrl(const Url& newUrl);
+
 public:
     JobManager(IJobFactoryPtr jobFactory, const Url& url, const Name& setName = "");
     //JobManager(const JobManager& copy); // TODO: implement if default copy ctor is not sufficient
@@ -46,7 +49,6 @@ public:
     void removeJob(const Url& url);
     void setDescription(const Description& newDescription);
     void setName(const Name& newName);
-    bool setUrl(const Url& newUrl);
 
     void operator ()();
 

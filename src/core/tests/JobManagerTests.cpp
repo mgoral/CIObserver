@@ -55,21 +55,6 @@ TEST_F(JobManagerTests, CheckDefaultManagerSettings) {
     EXPECT_EQ(Description(), manager.getDescription());
 }
 
-TEST_F(JobManagerTests, SetIncorrectUrl) {
-    JobManager manager(testJobFactory, url);
-    Url wrongUrl = "httpss:/WrongUrl.com";
-
-    ASSERT_FALSE(manager.setUrl(wrongUrl));
-}
-
-TEST_F(JobManagerTests, SetCorrectUrl) {
-    JobManager manager(testJobFactory, url);
-    Url newUrl = "https://example.org";
-
-    ASSERT_TRUE(manager.setUrl(newUrl));
-    ASSERT_EQ(newUrl, manager.getUrl());
-}
-
 TEST_F(JobManagerTests, SetDescription) {
     JobManager manager(testJobFactory, url);
     Description desc = "Job manager description containing strage Polish characters: ąuęśćź";
