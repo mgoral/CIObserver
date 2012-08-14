@@ -2,6 +2,8 @@
 #include "JobManager.hpp"
 #include "Job.hpp"
 
+#include <Poco/Format.h>
+
 namespace ci {
 
 namespace core {
@@ -9,7 +11,7 @@ namespace core {
 JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUrl, const Name& newName)
 : jobFactory(jobFactory), logger(Poco::Logger::Logger::get("CI.Core.JobManager")) {
     if(!setUrl(newUrl)) {
-        poco_error(logger, _("JobManager got incorrect URL: ") + newUrl);
+        poco_error(logger, Poco::format( "JobManager got incorrect URL: %s", url.raw() ).c_str());
         throw bad_parameter(_("JobManager incorrect URL"));
     }
     if("" == newName) {
@@ -26,8 +28,19 @@ JobManager::~JobManager() {}
 
 void JobManager::addJob(const Url& url, const Name& name, JobStatus status) {
     IJobPtr newJob(jobFactory->createJob(url, name, status));
+
     std::pair<JobCollection::iterator,bool> ret;
     ret = jobs.insert(newJob);
+
+    IJobPtr job = *(ret.first);
+
+    if(false == ret.second) {
+        poco_debug(logger, Poco::format(_("Job for URL %s is already in collection. Updating."), url.raw()));
+        (*ret.first)->setStatus(status);
+    }
+    else {
+        poco_debug(logger, Poco::format(_("Job for URL %s successfully added."), url.raw()));
+    }
 }
 
 IJobPtr JobManager::getJob(const Url& url) const {
@@ -40,7 +53,7 @@ IJobPtr JobManager::getJob(const Url& url) const {
     if(it != jobs.end()) {
         return *it;
     }
-    poco_warning(logger, _("No job found for URL: ") + url);
+    poco_warning(logger, _("No job found for URL: ") + url.raw());
     return IJobPtr();
 }
 

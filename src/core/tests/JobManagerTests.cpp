@@ -71,6 +71,15 @@ TEST_F(JobManagerTests, ChangeName) {
     ASSERT_EQ(name, manager.getName());
 }
 
+TEST_F(JobManagerTests, GetNonExistingJob) {
+    JobManager manager(testJobFactory, url);
+    Url jobUrl = "http://example.com";
+
+    EXPECT_CALL(*testJobFactory, createJob(jobUrl)).WillOnce(Return(new IJobMock()));
+
+    ASSERT_EQ(IJobPtr(), manager.getJob(jobUrl));
+}
+
 TEST_F(JobManagerTests, AddJob) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
@@ -100,4 +109,24 @@ TEST_F(JobManagerTests, RemoveJob) {
     manager.removeJob(jobUrl);
 
     ASSERT_EQ(IJobPtr(), manager.getJob(jobUrl));
+}
+
+TEST_F(JobManagerTests, UpdateJobThroughAddingIt) {
+    // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
+    // tested methods behaviour
+    JobManager::IJobFactoryPtr jobFactory(new JobFactory());
+    JobManager manager(jobFactory, url);
+
+    Url jobUrl = "http://example.com";
+    Name jobName = "FooJob";
+    JobStatus jobStatus = JOB_OK;
+    JobStatus jobNewStatus = JOB_FAILED;
+
+    manager.addJob(jobUrl, jobName, jobStatus);
+    ASSERT_EQ(jobUrl, manager.getJob(jobUrl)->getUrl());
+    EXPECT_EQ(jobStatus, manager.getJob(jobUrl)->getStatus());
+
+    manager.addJob(jobUrl, jobName, jobNewStatus);
+    EXPECT_EQ(jobUrl, manager.getJob(jobUrl)->getUrl());
+    EXPECT_EQ(jobNewStatus, manager.getJob(jobUrl)->getStatus());
 }
