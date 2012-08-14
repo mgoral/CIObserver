@@ -57,7 +57,7 @@ public:
      * @param[in] status Job status to be setStatus
      * @param[in] datetime Time when status change occurs. Defaults to the function invocation time.
      */
-    virtual void setStatus(JobStatus status, const JobTime& datetime) = 0;
+    virtual void setStatus(JobStatus status, const JobTime& datetime = JobTime()) = 0;
 
     /*
      * @brief Overloaded operator==()
