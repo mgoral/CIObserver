@@ -20,6 +20,7 @@ public:
     /*
      * @brief: Add a new job with a given name, url and status.
      *         Job uniqueness is determined by their urls.
+     *         If a given job already exists, then it's status is updated.
      */
     virtual void addJob(const Name& name, const Url& url, JobStatus status) = 0;
 
