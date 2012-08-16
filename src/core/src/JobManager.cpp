@@ -69,6 +69,10 @@ const Url& JobManager::getUrl() const {
     return url;
 }
 
+void JobManager::notify(Poco::Timer& timer) {
+    //TODO: implementation -- mgoral
+}
+
 void JobManager::removeJob(const Url& url) {
     IJobPtr tempJob(jobFactory->createJob(url));
     jobs.erase(tempJob);
@@ -90,7 +94,9 @@ bool JobManager::setUrl(const Url& newUrl) {
     return false;
 }
 
-void JobManager::operator ()() {}
+bool JobManager::operator <(const ITimerObserver& other) const {
+    return url < static_cast<const JobManager&>(other).getUrl();
+}
 
 } // namespace core
 

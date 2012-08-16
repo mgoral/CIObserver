@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <set>
+#include <Poco/Timer.h>
 #include <Poco/Logger.h>
 
 #include "Helpers.hpp"
@@ -41,12 +42,12 @@ public:
     const Description& getDescription() const;
     const Name& getName() const;
     const Url& getUrl() const;
+    void notify(Poco::Timer& timer);
     void removeJob(const Url& url);
     void setDescription(const Description& newDescription);
     void setName(const Name& newName);
 
-    void operator ()();
-
+    bool operator <(const ITimerObserver& other) const;
 };
 
 } // namespace core

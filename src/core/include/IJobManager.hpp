@@ -2,7 +2,9 @@
 #define IJOBMANAGER_HPP
 
 #include <memory>
+
 #include "IJob.hpp"
+#include "ITimerObserver.hpp"
 
 namespace ci {
 
@@ -13,7 +15,7 @@ typedef std::shared_ptr<IJob> IJobPtr;
 /*
  * @brief Class which groups getched jobs per given Jenkins/Hudson address
  */
-class IJobManager {
+class IJobManager : public ITimerObserver {
 public:
     virtual ~IJobManager() {}
 
