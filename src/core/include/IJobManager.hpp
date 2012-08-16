@@ -43,11 +43,6 @@ public:
     virtual const Name& getName() const = 0;
 
     /*
-     * @brief Returns CI instance URL address.
-     */
-    virtual const Url& getUrl() const = 0;
-
-    /*
      * @brief: Remove a job with a given url from job collection.
      */
     virtual void removeJob(const Url& url) = 0;
