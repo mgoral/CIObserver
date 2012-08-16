@@ -11,7 +11,8 @@ Timer::Timer(ITimerObserverPtr observer)
 
 Timer::Timer(ITimerObserverPtr observer, Interval interval)
 : observer(observer), timer(0, interval), logger(Poco::Logger::get("CI.Core.Timer")) {
-    //timer.start(Poco::TimerCallback);
+    poco_information(logger, "Start!");
+    timer.start(Poco::TimerCallback<ITimerObserver>(*observer, &ITimerObserver::notify));
     running = true;
 }
 
@@ -21,13 +22,18 @@ ITimerObserverPtr Timer::getObserver() const {
     return observer;
 }
 
+bool Timer::isRunning() const {
+    return running;
+}
+
 void Timer::setInterval(Interval interval) {
     timer.restart(interval);
 }
 
 void Timer::start() {
     if(!running) {
-        //timer.start
+        poco_information(logger, "Start!");
+        timer.start(Poco::TimerCallback<ITimerObserver>(*observer, &ITimerObserver::notify));
     }
 
 }

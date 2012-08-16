@@ -34,6 +34,7 @@ public:
     ~Timer();
 
     ITimerObserverPtr getObserver() const;
+    bool isRunning() const;
     void setInterval(Interval interval);
     void start();
     void stop();
