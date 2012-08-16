@@ -23,6 +23,11 @@ public:
     virtual ~ITimer() {}
 
     /*
+     * @brief Returns current notification interval.
+     */
+    virtual Interval getInterval() const = 0;
+
+    /*
      * @brief Return stored manager.
      */
     virtual ITimerObserverPtr getObserver() const = 0;

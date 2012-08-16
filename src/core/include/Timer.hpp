@@ -33,6 +33,7 @@ public:
      */
     ~Timer();
 
+    Interval getInterval() const;
     ITimerObserverPtr getObserver() const;
     bool isRunning() const;
     void setInterval(Interval interval);
