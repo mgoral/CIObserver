@@ -11,7 +11,7 @@ namespace core {
 JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUrl, const Name& newName)
 : jobFactory(jobFactory), logger(Poco::Logger::get("CI.Core.JobManager")) {
     if(!setUrl(newUrl)) {
-        poco_error(logger, Poco::format( "JobManager got incorrect URL: %s", url.raw() ).c_str());
+        poco_error(logger, Poco::format( _("JobManager got incorrect URL: %s"), url.raw()));
         throw bad_parameter(_("JobManager incorrect URL"));
     }
     if("" == newName) {
@@ -53,7 +53,7 @@ IJobPtr JobManager::getJob(const Url& url) const {
     if(it != jobs.end()) {
         return *it;
     }
-    poco_warning(logger, _("No job found for URL: ") + url.raw());
+    poco_warning(logger, Poco::format(_("No job found for URL '%s'"), url.raw()));
     return IJobPtr();
 }
 

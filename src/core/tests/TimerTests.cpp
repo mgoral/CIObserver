@@ -15,12 +15,16 @@ using namespace ci::core;
 class TimerTests : public Test {
 protected:
     virtual void SetUp() {
-        jobManagerMock.reset(new IJobManagerMock());
+        jobManagerMock.reset(new NiceMock<IJobManagerMock>());
         defaultInterval = 30;
+        managerName = "ManagerMock";
+
+        ON_CALL(*jobManagerMock, getName()).WillByDefault(ReturnRef(managerName));
     }
 
     std::shared_ptr<IJobManagerMock> jobManagerMock;
     Interval defaultInterval;
+    Name managerName;
 };
 
 TEST_F(TimerTests, CheckNotStartingConstructor) {
