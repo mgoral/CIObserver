@@ -8,11 +8,14 @@ namespace ci {
 
 namespace core {
 
-JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Name& newName)
+JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUrl, const Name& newName)
 : jobFactory(jobFactory), logger(Poco::Logger::get("CI.Core.JobManager")) {
+    if(!setUrl(newUrl)) {
+        poco_error(logger, Poco::format( "JobManager got incorrect URL: %s", url.raw() ).c_str());
+        throw bad_parameter(_("JobManager incorrect URL"));
+    }
     if("" == newName) {
-        poco_error(logger, _("Tried to create JobManager with an empty name!"));
-        throw bad_parameter(_("JobManager empty name"));
+        name = newUrl;
     }
     else {
         name = newName;
@@ -62,6 +65,10 @@ const Name& JobManager::getName() const {
     return name;
 }
 
+const Url& JobManager::getUrl() const {
+    return url;
+}
+
 void JobManager::notify(Poco::Timer& timer) {
     //TODO: implementation -- mgoral
 }
@@ -77,6 +84,18 @@ void JobManager::setDescription(const Description& newDescription) {
 
 void JobManager::setName(const Name& newName) {
     name = newName;
+}
+
+bool JobManager::setUrl(const Url& newUrl) {
+    if(newUrl.substr(0,7) == "http://" || newUrl.substr(0, 8) == "https://") {
+        url = newUrl;
+        return true;
+    }
+    return false;
+}
+
+bool JobManager::operator <(const ITimerObserver& other) const {
+    return url < static_cast<const JobManager&>(other).getUrl();
 }
 
 } // namespace core

@@ -19,42 +19,52 @@ class JobManagerTests : public Test {
 protected:
     virtual void SetUp() {
         testJobFactory.reset(new IJobFactoryMock());
+        url = "http://example.com";
         name = "FooManagerName";
     }
 
     std::shared_ptr<IJobFactoryMock> testJobFactory;
+    Url url;
     Name name;
 };
 
-TEST_F(JobManagerTests, CreatingWithAGivenName) {
-    JobManager manager(testJobFactory, name);
+TEST_F(JobManagerTests, CreatingWithDefauls) {
+    JobManager manager(testJobFactory, url);
 
+    ASSERT_EQ(url, manager.getUrl());
+}
+
+TEST_F(JobManagerTests, CreatingWithAGivenName) {
+    JobManager manager(testJobFactory, url, name);
+
+    ASSERT_EQ(url, manager.getUrl());
     ASSERT_EQ(name, manager.getName());
 }
 
-TEST_F(JobManagerTests, CreatingWithWrongName) {
-    Name wrongName = "";
+TEST_F(JobManagerTests, CreatingWithWrongURL) {
+    Url wrongUrl = "WrongUrl";
 
-    ASSERT_THROW(JobManager(testJobFactory, wrongName), bad_parameter);
+    ASSERT_THROW(JobManager(testJobFactory, wrongUrl), bad_parameter);
 }
 
 TEST_F(JobManagerTests, CheckDefaultManagerSettings) {
-    JobManager manager(testJobFactory, name);
+    JobManager manager(testJobFactory, url);
 
-    EXPECT_EQ(name, manager.getName());
+    EXPECT_EQ(url, manager.getName());
+    EXPECT_EQ(url, manager.getUrl());
     EXPECT_EQ(Description(), manager.getDescription());
 }
 
 TEST_F(JobManagerTests, SetDescription) {
-    JobManager manager(testJobFactory, name);
-    Description desc = "Job manager description containing strange Polish characters: ąuęśćź";
+    JobManager manager(testJobFactory, url);
+    Description desc = "Job manager description containing strage Polish characters: ąuęśćź";
 
     manager.setDescription(desc);
     ASSERT_EQ(desc, manager.getDescription());
 }
 
 TEST_F(JobManagerTests, ChangeName) {
-    JobManager manager(testJobFactory, name);
+    JobManager manager(testJobFactory, url);
     Name name = "JobManager name";
 
     manager.setName(name);
@@ -62,7 +72,7 @@ TEST_F(JobManagerTests, ChangeName) {
 }
 
 TEST_F(JobManagerTests, GetNonExistingJob) {
-    JobManager manager(testJobFactory, name);
+    JobManager manager(testJobFactory, url);
     Url jobUrl = "http://example.com";
 
     EXPECT_CALL(*testJobFactory, createJob(jobUrl)).WillOnce(Return(new IJobMock()));
@@ -74,7 +84,7 @@ TEST_F(JobManagerTests, AddJob) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, name);
+    JobManager manager(jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";
@@ -89,7 +99,7 @@ TEST_F(JobManagerTests, RemoveJob) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, name);
+    JobManager manager(jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";
@@ -105,7 +115,7 @@ TEST_F(JobManagerTests, UpdateJobThroughAddingIt) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, name);
+    JobManager manager(jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";
