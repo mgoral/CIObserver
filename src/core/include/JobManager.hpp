@@ -46,6 +46,8 @@ public:
     void removeJob(const Url& url);
     void setDescription(const Description& newDescription);
     void setName(const Name& newName);
+
+    bool operator <(const ITimerObserver& other) const;
 };
 
 } // namespace core
