@@ -1,8 +1,8 @@
+#include <Poco/Format.h>
+
 #include "Exceptions.hpp"
 #include "JobManager.hpp"
 #include "Job.hpp"
-
-#include <Poco/Format.h>
 
 namespace ci {
 

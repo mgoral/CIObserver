@@ -13,6 +13,11 @@ namespace core {
 class ITimerObserver {
 public:
     /*
+     * @brief Returns observer identifier
+     */
+    virtual const Name& getName() const = 0;
+
+    /*
      * @brief Poco::Timer callback function.
      */
     virtual void notify(Poco::Timer& timer) = 0;
