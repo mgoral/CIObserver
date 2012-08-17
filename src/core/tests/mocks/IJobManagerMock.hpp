@@ -17,6 +17,8 @@ public:
         const Description&());
     MOCK_CONST_METHOD0(getName,
         const Name&());
+    MOCK_CONST_METHOD0(getUrl,
+        const Url&());
     MOCK_METHOD1(removeJob,
         void(const Url& url));
     MOCK_METHOD1(setDescription,

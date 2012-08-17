@@ -94,10 +94,6 @@ bool JobManager::setUrl(const Url& newUrl) {
     return false;
 }
 
-bool JobManager::operator <(const ITimerObserver& other) const {
-    return url < static_cast<const JobManager&>(other).getUrl();
-}
-
 } // namespace core
 
 } // namespace ci

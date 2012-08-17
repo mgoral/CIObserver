@@ -21,11 +21,6 @@ public:
      * @brief Poco::Timer callback function.
      */
     virtual void notify(Poco::Timer& timer) = 0;
-
-    /*
-     * @brief Children classes should follow the strict weak ordering principle.
-     */
-    virtual bool operator <(const ITimerObserver& other) const = 0;
 };
 
 } // namespace core
