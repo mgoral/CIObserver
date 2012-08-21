@@ -38,10 +38,22 @@ endfunction(check_found)
 
 macro(find_poco)
     find_library(
+        POCO_CRYPTO
+        NAMES PocoCrypto
+    )
+    check_found(POCO_CRYPTO ${POCO_CRYPTO})
+
+    find_library(
         POCO_NET
         NAMES PocoNet
     )
     check_found(POCO_NET ${POCO_NET})
+
+    find_library(
+        POCO_NET_SSL
+        NAMES PocoNetSSL
+    )
+    check_found(POCO_NET_SSL ${POCO_NET_SSL})
 
     find_library(
         POCO_FOUNDATION

@@ -5,6 +5,9 @@ target_link_libraries(
     core
     ${GTK2_LIBRARIES}
     ${POCO_FOUNDATION}
+    ${POCO_NET}
+    ${POCO_NET_SSL}
+    ${POCO_CRYPTO}
 )
 
 install(
