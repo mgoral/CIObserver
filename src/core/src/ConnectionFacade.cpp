@@ -1,19 +1,9 @@
 #include <iostream>
-#include <Poco/Exception.h>
 #include <Poco/Format.h>
-
-#include <Poco/Net/HTTPIOStream.h>
-#include <Poco/Net/HTTPSClientSession.h>
-#include <Poco/Net/HTTPResponse.h>
-#include <Poco/Net/HTTPRequest.h>
-#include <Poco/Net/NetException.h>
-#include <Poco/Net/Context.h>
 #include "Poco/URIStreamOpener.h"
 
 #include "ConnectionFacade.hpp"
 #include "Exceptions.hpp"
-
-using Poco::Exception;
 
 namespace ci {
 
