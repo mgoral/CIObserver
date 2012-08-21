@@ -1,20 +1,19 @@
 #ifndef CONNECTIONFACADE_HPP
 #define CONNECTIONFACADE_HPP
 
-#include <istream>
 #include <Poco/Logger.h>
 #include <Poco/URI.h>
 #include <Poco/Net/HTTPSession.h>
 #include <Poco/Net/HTTPStreamFactory.h>
 #include <Poco/Net/HTTPSStreamFactory.h>
 
-#include "GlobalDefs.hpp"
+#include "IConnectionFacade.hpp"
 
 namespace ci {
 
 namespace core {
 
-class ConnectionFacade {
+class ConnectionFacade : public IConnectionFacade {
 private:
     static bool isInitialized;
     Poco::Logger& logger;
