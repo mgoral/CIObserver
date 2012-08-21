@@ -10,6 +10,7 @@
 
 #include "IJobFactoryMock.hpp"
 #include "IJobMock.hpp"
+#include "IConnectionFacadeMock.hpp"
 
 using namespace testing;
 using namespace ci;
@@ -19,23 +20,25 @@ class JobManagerTests : public Test {
 protected:
     virtual void SetUp() {
         testJobFactory.reset(new IJobFactoryMock());
+        connectionFacadeMock.reset(new IConnectionFacadeMock());
         url = "http://example.com";
         name = "FooManagerName";
     }
 
     std::shared_ptr<IJobFactoryMock> testJobFactory;
+    std::shared_ptr<IConnectionFacadeMock> connectionFacadeMock;
     Url url;
     Name name;
 };
 
 TEST_F(JobManagerTests, CreatingWithDefauls) {
-    JobManager manager(testJobFactory, url);
+    JobManager manager(connectionFacadeMock, testJobFactory, url);
 
     ASSERT_EQ(url, manager.getUrl());
 }
 
 TEST_F(JobManagerTests, CreatingWithAGivenName) {
-    JobManager manager(testJobFactory, url, name);
+    JobManager manager(connectionFacadeMock, testJobFactory, url, name);
 
     ASSERT_EQ(url, manager.getUrl());
     ASSERT_EQ(name, manager.getName());
@@ -44,11 +47,11 @@ TEST_F(JobManagerTests, CreatingWithAGivenName) {
 TEST_F(JobManagerTests, CreatingWithWrongURL) {
     Url wrongUrl = "WrongUrl";
 
-    ASSERT_THROW(JobManager(testJobFactory, wrongUrl), bad_parameter);
+    ASSERT_THROW(JobManager(connectionFacadeMock, testJobFactory, wrongUrl), bad_parameter);
 }
 
 TEST_F(JobManagerTests, CheckDefaultManagerSettings) {
-    JobManager manager(testJobFactory, url);
+    JobManager manager(connectionFacadeMock, testJobFactory, url);
 
     EXPECT_EQ(url, manager.getName());
     EXPECT_EQ(url, manager.getUrl());
@@ -56,7 +59,7 @@ TEST_F(JobManagerTests, CheckDefaultManagerSettings) {
 }
 
 TEST_F(JobManagerTests, SetDescription) {
-    JobManager manager(testJobFactory, url);
+    JobManager manager(connectionFacadeMock, testJobFactory, url);
     Description desc = "Job manager description containing strage Polish characters: ąuęśćź";
 
     manager.setDescription(desc);
@@ -64,7 +67,7 @@ TEST_F(JobManagerTests, SetDescription) {
 }
 
 TEST_F(JobManagerTests, ChangeName) {
-    JobManager manager(testJobFactory, url);
+    JobManager manager(connectionFacadeMock, testJobFactory, url);
     Name name = "JobManager name";
 
     manager.setName(name);
@@ -72,7 +75,7 @@ TEST_F(JobManagerTests, ChangeName) {
 }
 
 TEST_F(JobManagerTests, GetNonExistingJob) {
-    JobManager manager(testJobFactory, url);
+    JobManager manager(connectionFacadeMock, testJobFactory, url);
     Url jobUrl = "http://example.com";
 
     EXPECT_CALL(*testJobFactory, createJob(jobUrl)).WillOnce(Return(new IJobMock()));
@@ -84,7 +87,7 @@ TEST_F(JobManagerTests, AddJob) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, url);
+    JobManager manager(connectionFacadeMock, jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";
@@ -99,7 +102,7 @@ TEST_F(JobManagerTests, RemoveJob) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, url);
+    JobManager manager(connectionFacadeMock, jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";
@@ -115,7 +118,7 @@ TEST_F(JobManagerTests, UpdateJobThroughAddingIt) {
     // We cannot use mocks here because it would mean that through created constant objects we're indirectly controlling
     // tested methods behaviour
     JobManager::IJobFactoryPtr jobFactory(new JobFactory());
-    JobManager manager(jobFactory, url);
+    JobManager manager(connectionFacadeMock, jobFactory, url);
 
     Url jobUrl = "http://example.com";
     Name jobName = "FooJob";

@@ -3,13 +3,14 @@
 #include "Exceptions.hpp"
 #include "JobManager.hpp"
 #include "Job.hpp"
+#include "ConnectionFacade.hpp"
 
 namespace ci {
 
 namespace core {
 
-JobManager::JobManager(std::shared_ptr<IJobFactory> jobFactory, const Url& newUrl, const Name& newName)
-: jobFactory(jobFactory), logger(Poco::Logger::get("CI.Core.JobManager")) {
+JobManager::JobManager(IConnectionFacadePtr connectionFacade, IJobFactoryPtr jobFactory, const Url& newUrl, const Name& newName)
+: connectionFacade(connectionFacade), jobFactory(jobFactory), logger(Poco::Logger::get("CI.Core.JobManager")) {
     if(!setUrl(newUrl)) {
         poco_error(logger, Poco::format( _("JobManager got incorrect URL: %s"), url.raw()));
         throw bad_parameter(_("JobManager incorrect URL"));

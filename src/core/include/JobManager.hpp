@@ -10,6 +10,7 @@
 #include "IJob.hpp"
 #include "IJobManager.hpp"
 #include "IJobFactory.hpp"
+#include "IConnectionFacade.hpp"
 
 namespace ci {
 
@@ -18,10 +19,12 @@ namespace core {
 class JobManager : public IJobManager {
 public:
     typedef std::shared_ptr<IJobFactory> IJobFactoryPtr;
+    typedef std::shared_ptr<IConnectionFacade> IConnectionFacadePtr;
 
 private:
     typedef std::set<IJobPtr, PointerCompare<IJobPtr> > JobCollection;
 
+    IConnectionFacadePtr connectionFacade;
     IJobFactoryPtr jobFactory;
     Name name;
     Description description;
@@ -33,7 +36,7 @@ protected:
     bool setUrl(const Url& newUrl);
 
 public:
-    JobManager(IJobFactoryPtr jobFactory, const Url& url, const Name& setName = "");
+    JobManager(IConnectionFacadePtr connectionFacade, IJobFactoryPtr jobFactory, const Url& url, const Name& setName = "");
     //JobManager(const JobManager& copy); // TODO: implement if default copy ctor is not sufficient
     ~JobManager();
 
