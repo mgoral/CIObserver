@@ -1,9 +1,18 @@
 #include <Poco/Format.h>
+#include <Poco/DOM/AutoPtr.h>
+#include <Poco/DOM/Document.h>
+#include <Poco/DOM/DOMParser.h>
+#include <Poco/DOM/NodeFilter.h>
+#include <Poco/DOM/NodeList.h>
+#include <Poco/DOM/NodeIterator.h>
+#include <Poco/SAX/InputSource.h>
 
 #include "Exceptions.hpp"
 #include "JobManager.hpp"
 #include "Job.hpp"
 #include "ConnectionFacade.hpp"
+
+#include <Poco/URIStreamOpener.h>
 
 namespace ci {
 
@@ -36,11 +45,11 @@ void JobManager::addJob(const Url& url, const Name& name, JobStatus status) {
     IJobPtr job = *(ret.first);
 
     if(false == ret.second) {
-        poco_debug(logger, Poco::format(_("Job for URL %s is already in collection. Updating."), url.raw()));
+        poco_trace(logger, Poco::format(_("Job for URL %s is already in collection. Updating."), url.raw()));
         (*ret.first)->setStatus(status);
     }
     else {
-        poco_debug(logger, Poco::format(_("Job for URL %s successfully added."), url.raw()));
+        poco_trace(logger, Poco::format(_("Job for URL %s successfully added."), url.raw()));
     }
 }
 
@@ -70,10 +79,6 @@ const Url& JobManager::getUrl() const {
     return url;
 }
 
-void JobManager::notify(Poco::Timer& timer) {
-    //TODO: implementation -- mgoral
-}
-
 void JobManager::removeJob(const Url& url) {
     IJobPtr tempJob(jobFactory->createJob(url));
     jobs.erase(tempJob);
@@ -93,6 +98,57 @@ bool JobManager::setUrl(const Url& newUrl) {
         return true;
     }
     return false;
+}
+
+void JobManager::notify(Poco::Timer& timer) {
+    poco_information(logger, Poco::format(_("Fetching %s"), url.raw()));
+
+	Poco::URI uri(url);
+    std::unique_ptr<std::istream> xml(connectionFacade->open(url));
+
+    Poco::XML::InputSource xmlSrc(*xml);
+
+    Poco::XML::DOMParser parser;
+    Poco::AutoPtr<Poco::XML::Document> root = parser.parse(&xmlSrc);
+    Poco::AutoPtr<Poco::XML::NodeList> jobs = root->getElementsByTagName("job");
+
+    Url xmlUrl;
+    Name xmlName;
+    JobStatus xmlStatus;
+
+
+    // TODO: Try using JobManager in main with address https://builds.apache.org/api/xml
+    // TODO: FINISHED HERE!!! THIS SHIT IS UGLY, BETTER MAKE A GOOD SAX PARSER OR HIDE IT INSIDE ci::core::XMLParser class
+    for(u32 i = 0; i < jobs->length(); ++i) {
+        // Reset values for a new job.
+        xmlUrl = "";
+        xmlName = "";
+        xmlStatus = JOB_UNKNOWN;
+
+        Poco::XML::NodeIterator it(jobs->item(i), Poco::XML::NodeFilter::SHOW_ELEMENT);
+        Poco::XML::Node* currentNode = it.nextNode();
+
+        while(currentNode) {
+            if("name" == currentNode->nodeName()) {
+                xmlName = currentNode->innerText();
+            }
+            else if("url" == currentNode->nodeName()) {
+                xmlUrl = currentNode->innerText();
+            }
+            else if("color" == currentNode->nodeName()) {
+                if(currentNode->innerText() == "blue") {
+                    xmlStatus = JOB_OK;
+                }
+                else {
+                    xmlStatus = JOB_UNKNOWN;
+                }
+            }
+            currentNode = it.nextNode();
+        }
+
+        addJob(xmlUrl, xmlName, xmlStatus);
+    }
+    poco_debug(logger, Poco::format(_("Finished fetching %s"), url.raw()));
 }
 
 } // namespace core

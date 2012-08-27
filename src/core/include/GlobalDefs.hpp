@@ -1,6 +1,12 @@
 #ifndef GLOBALDEFS_HPP
 #define GLOBALDEFS_HPP
 
+// enables poco_debug
+#ifdef poco_debug
+#undef poco_debug
+#endif
+#define poco_debug(logger, msg) if ((logger).debug()) (logger).debug(msg); else (void) 0
+
 #include <libintl.h>
 #include <glibmm/ustring.h>
 

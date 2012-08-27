@@ -36,6 +36,7 @@ void ConnectionFacade::initialize() {
 //   https(proxyHost, proxyPort, proxyUsername, proxyPassword) {}
 
 std::istream* ConnectionFacade::open(const Url& url) {
+    Poco::Mutex::ScopedLock lock(mutex);
 	Poco::URI uri(url);
     return Poco::URIStreamOpener::defaultOpener().open(uri);
 }

@@ -8,6 +8,7 @@ target_link_libraries(
     ${POCO_NET}
     ${POCO_NET_SSL}
     ${POCO_CRYPTO}
+    ${POCO_XML}
 )
 
 install(

@@ -6,6 +6,7 @@
 #include <Poco/Net/HTTPSession.h>
 #include <Poco/Net/HTTPStreamFactory.h>
 #include <Poco/Net/HTTPSStreamFactory.h>
+#include <Poco/Mutex.h>
 
 #include "IConnectionFacade.hpp"
 
@@ -17,6 +18,7 @@ class ConnectionFacade : public IConnectionFacade {
 private:
     static bool isInitialized;
     Poco::Logger& logger;
+    Poco::Mutex mutex;
     Poco::Net::HTTPStreamFactory http;
     Poco::Net::HTTPSStreamFactory https;
 

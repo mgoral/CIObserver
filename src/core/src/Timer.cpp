@@ -12,7 +12,7 @@ Timer::Timer(ITimerObserverPtr observer)
 : running(false), observer(observer), timer(0, 0), logger(Poco::Logger::get("CI.Core.Timer")) {}
 
 Timer::Timer(ITimerObserverPtr observer, Interval interval)
-: observer(observer), timer(0, interval), logger(Poco::Logger::get("CI.Core.Timer")) {
+: observer(observer), timer(30, interval), logger(Poco::Logger::get("CI.Core.Timer")) {
     timer.start(Poco::TimerCallback<ITimerObserver>(*observer, &ITimerObserver::notify));
     running = true;
     poco_information(logger, Poco::format(_("Started notifying observer '%s' with interval %u."),
