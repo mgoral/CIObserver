@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <Poco/Format.h>
 #include <Poco/DOM/AutoPtr.h>
 #include <Poco/DOM/Document.h>
@@ -110,22 +111,21 @@ void JobManager::notify(Poco::Timer& timer) {
 
     Poco::XML::DOMParser parser;
     Poco::AutoPtr<Poco::XML::Document> root = parser.parse(&xmlSrc);
-    Poco::AutoPtr<Poco::XML::NodeList> jobs = root->getElementsByTagName("job");
+    Poco::AutoPtr<Poco::XML::NodeList> xmlJobs = root->getElementsByTagName("job");
 
     Url xmlUrl;
     Name xmlName;
     JobStatus xmlStatus;
+    JobCollection newJobs;
+    u32 removalNo = jobs.size(); // prepare maximum jobs number to remove before adding new ones.
 
-
-    // TODO: Try using JobManager in main with address https://builds.apache.org/api/xml
-    // TODO: FINISHED HERE!!! THIS SHIT IS UGLY, BETTER MAKE A GOOD SAX PARSER OR HIDE IT INSIDE ci::core::XMLParser class
-    for(u32 i = 0; i < jobs->length(); ++i) {
+    for(u32 i = 0; i < xmlJobs->length(); ++i) {
         // Reset values for a new job.
         xmlUrl = "";
         xmlName = "";
         xmlStatus = JOB_UNKNOWN;
 
-        Poco::XML::NodeIterator it(jobs->item(i), Poco::XML::NodeFilter::SHOW_ELEMENT);
+        Poco::XML::NodeIterator it(xmlJobs->item(i), Poco::XML::NodeFilter::SHOW_ELEMENT);
         Poco::XML::Node* currentNode = it.nextNode();
 
         while(currentNode) {
@@ -146,8 +146,21 @@ void JobManager::notify(Poco::Timer& timer) {
             currentNode = it.nextNode();
         }
 
+        // Add new jobs but also remember which jobs have been added.
         addJob(xmlUrl, xmlName, xmlStatus);
+        newJobs.insert(IJobPtr(jobFactory->createJob(xmlUrl, xmlName, xmlStatus)));
     }
+
+    // New jobs were added and existing jobs updated in above loop. Now it's time to remove legacy jobs.
+    std::vector<IJobPtr> toRemove(removalNo); // at most all old jobs might be replaced with the new ones
+    std::vector<IJobPtr>::iterator removeIt;
+
+    removeIt = std::set_difference(jobs.begin(), jobs.end(), newJobs.begin(), newJobs.end(),
+        toRemove.begin(), PointerCompare<IJobPtr>());
+
+    for(u32 i; i < toRemove.size(); ++i)
+        removeJob(toRemove[i]->getUrl());
+
     poco_debug(logger, Poco::format(_("Finished fetching %s"), url.raw()));
 }
 
