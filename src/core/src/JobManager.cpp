@@ -136,8 +136,14 @@ void JobManager::notify(Poco::Timer& timer) {
                 xmlUrl = currentNode->innerText();
             }
             else if("color" == currentNode->nodeName()) {
-                if(currentNode->innerText() == "blue") {
+                if(currentNode->innerText().substr(0, 4) == "blue") { // blue, blue_anime
                     xmlStatus = JOB_OK;
+                }
+                else if(currentNode->innerText().substr(0, 6) == "yellow") { // yellow, yellow_anime
+                    xmlStatus = JOB_FAILED;
+                }
+                else if(currentNode->innerText().substr(0, 3) == "red") { // red, red_anime
+                    xmlStatus = JOB_ERROR;
                 }
                 else {
                     xmlStatus = JOB_UNKNOWN;
