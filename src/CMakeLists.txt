@@ -17,7 +17,7 @@ include_directories(
 add_subdirectory(core)
 add_subdirectory(gui)
 
-set(PROJECT_SOURCE_FILES main.cpp MainApp.cpp)
+set(PROJECT_SOURCE_FILES main.cpp CIObserverApp.cpp)
 set(PROJECT_BIN ${PROJECT_NAME})
 
 add_executable(${PROJECT_BIN} ${PROJECT_SOURCE_FILES})
@@ -58,9 +58,13 @@ install(TARGETS ${PROJECT_BIN}
 
 if(CMAKE_HOST_UNIX)
     install(CODE
-        "message(STATUS \"Creating symbolic links...\")
+        "message(STATUS \"Creating starting script...\")
+        file(WRITE ${CMAKE_INSTALL_PREFIX}/bin/${PROJECT_NAME}
+            \"#!$ENV{SHELL}\n\n\"
+            \"${CMAKE_INSTALL_PREFIX}/${PROJECT_INSTALL_DIR}/${PROJECT_NAME} $@\n\"
+        )
         execute_process(
-            COMMAND ln -sf ../${PROJECT_INSTALL_DIR}/${PROJECT_NAME}
+            COMMAND chmod +x ${PROJECT_NAME}
             WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin
         )"
     )
