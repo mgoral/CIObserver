@@ -3,6 +3,8 @@ project(CIObserver)
 
 include(InternalFunctions.cmake)
 
+set(PROJECT_INSTALL_DIR share/${PROJECT_NAME})
+
 if(NOT CMAKE_BUILD_TYPE)
     set(
         CMAKE_BUILD_TYPE "Debug"
@@ -19,3 +21,6 @@ add_definitions("-std=c++0x")
 
 add_subdirectory(src)
 add_subdirectory(thirdparty EXCLUDE_FROM_ALL)
+
+install(DIRECTORY data DESTINATION ${PROJECT_INSTALL_DIR})
+
