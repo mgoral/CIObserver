@@ -29,6 +29,7 @@ namespace ci {
 typedef Glib::ustring Name;
 typedef Glib::ustring Description;
 typedef Glib::ustring Url;
+typedef Glib::ustring Path;
 
 } // namespace ci
 
