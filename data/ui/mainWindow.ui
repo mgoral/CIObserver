@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
-  <object class="GtkListStore" id="CIStore">
-    <columns>
-      <!-- column-name JobName -->
-      <column type="gchararray"/>
-      <!-- column-name Image -->
-      <column type="GdkPixbuf"/>
-    </columns>
-  </object>
-  <object class="GtkImage" id="imgRemove">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-remove</property>
-  </object>
-  <object class="GtkDialog" id="editCI">
+  <object class="GtkDialog" id="CIEdit">
     <property name="can_focus">False</property>
     <property name="margin_top">4</property>
     <property name="border_width">5</property>
@@ -210,6 +197,19 @@
       <action-widget response="0">buttonOK</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkListStore" id="CIStore">
+    <columns>
+      <!-- column-name JobName -->
+      <column type="gchararray"/>
+      <!-- column-name Image -->
+      <column type="GdkPixbuf"/>
+    </columns>
+  </object>
+  <object class="GtkImage" id="imgEdit">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
+  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -220,10 +220,10 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
-  <object class="GtkImage" id="imgEdit">
+  <object class="GtkImage" id="imgRemove">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
+    <property name="stock">gtk-remove</property>
   </object>
   <object class="GtkWindow" id="CIMainWindow">
     <property name="can_focus">False</property>
