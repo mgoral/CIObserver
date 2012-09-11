@@ -27,7 +27,6 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="cancelAddingJob" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -44,7 +43,6 @@
                 <property name="receives_default">True</property>
                 <property name="use_action_appearance">False</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="saveJob" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -205,11 +203,6 @@
       <column type="GdkPixbuf"/>
     </columns>
   </object>
-  <object class="GtkImage" id="imgEdit">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-edit</property>
-  </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -219,6 +212,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
+  </object>
+  <object class="GtkImage" id="imgEdit">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-edit</property>
   </object>
   <object class="GtkImage" id="imgRemove">
     <property name="visible">True</property>
@@ -315,7 +313,6 @@
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="image">imgAdd</property>
-                    <signal name="clicked" handler="editJob" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -332,7 +329,6 @@
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="image">imgEdit</property>
-                    <signal name="clicked" handler="editJob" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -349,7 +345,6 @@
                     <property name="receives_default">True</property>
                     <property name="use_action_appearance">False</property>
                     <property name="image">imgRemove</property>
-                    <signal name="clicked" handler="removeJob" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
