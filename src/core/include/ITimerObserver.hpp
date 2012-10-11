@@ -1,6 +1,7 @@
 #ifndef ITIMEROBSERVER_HPP
 #define ITIMEROBSERVER_HPP
 
+#include <memory>
 #include <Poco/Timer.h>
 
 namespace ci {
@@ -13,20 +14,16 @@ namespace core {
 class ITimerObserver {
 public:
     /*
-     * @brief Returns observer identifier
-     */
-    virtual const Name& getName() const = 0;
-
-    /*
      * @brief Poco::Timer callback function.
      */
     virtual void notify(Poco::Timer& timer) = 0;
 };
+
+typedef std::shared_ptr<ITimerObserver> ITimerObserverPtr;
 
 } // namespace core
 
 } // namespace ci
 
 #endif
-
 

@@ -4,7 +4,7 @@
 #include <memory>
 #include <Poco/Thread.h>
 
-#include "IJobManagerMock.hpp"
+#include "ICIManagerMock.hpp"
 
 #include "Timer.hpp"
 
@@ -15,36 +15,34 @@ using namespace ci::core;
 class TimerTests : public Test {
 protected:
     virtual void SetUp() {
-        jobManagerMock.reset(new NiceMock<IJobManagerMock>());
+        ciManagerMock.reset(new ICIManagerMock());
         defaultInterval = 30;
         managerName = "ManagerMock";
-
-        ON_CALL(*jobManagerMock, getName()).WillByDefault(ReturnRef(managerName));
     }
 
-    std::shared_ptr<IJobManagerMock> jobManagerMock;
+    std::shared_ptr<ICIManagerMock> ciManagerMock;
     Interval defaultInterval;
     Name managerName;
 };
 
 TEST_F(TimerTests, CheckNotStartingConstructor) {
-    Timer timer(jobManagerMock);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(0);
+    Timer timer(ciManagerMock);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(0);
 
     Poco::Thread::sleep(200);
 }
 
 TEST_F(TimerTests, CheckStartingConstructor) {
-    Timer timer(jobManagerMock, defaultInterval);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(AtLeast(10));
+    Timer timer(ciManagerMock, defaultInterval);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(AtLeast(10));
 
     Poco::Thread::sleep(320);
 }
 
 TEST_F(TimerTests, SetInterval) {
     Interval newInterval = 42;
-    Timer timer(jobManagerMock);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(0);
+    Timer timer(ciManagerMock);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(0);
 
     timer.setInterval(newInterval);
     ASSERT_EQ(newInterval, timer.getInterval());
@@ -54,8 +52,8 @@ TEST_F(TimerTests, SetInterval) {
 
 TEST_F(TimerTests, SetIntervalWhileTimerIsRunning) {
     Interval newInterval = 42;
-    Timer timer(jobManagerMock, defaultInterval);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(AtLeast(1));
+    Timer timer(ciManagerMock, defaultInterval);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(AtLeast(1));
 
     EXPECT_EQ(defaultInterval, timer.getInterval());
 
@@ -67,8 +65,8 @@ TEST_F(TimerTests, SetIntervalWhileTimerIsRunning) {
 }
 
 TEST_F(TimerTests, CheckManualStartingWithDefaultInterval) {
-    Timer timer(jobManagerMock);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(0);
+    Timer timer(ciManagerMock);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(0);
 
     timer.start();
     EXPECT_FALSE(timer.isRunning());
@@ -77,9 +75,9 @@ TEST_F(TimerTests, CheckManualStartingWithDefaultInterval) {
 }
 
 TEST_F(TimerTests, CheckSettingIntervalAndManualStarting) {
-    Timer timer(jobManagerMock);
+    Timer timer(ciManagerMock);
     timer.setInterval(50);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(AtLeast(6));
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(AtLeast(6));
 
     EXPECT_FALSE(timer.isRunning());
     timer.start();
@@ -89,8 +87,8 @@ TEST_F(TimerTests, CheckSettingIntervalAndManualStarting) {
 }
 
 TEST_F(TimerTests, ManualTimerStop) {
-    Timer timer(jobManagerMock, defaultInterval);
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(AtLeast(2));
+    Timer timer(ciManagerMock, defaultInterval);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(AtLeast(2));
 
     EXPECT_TRUE(timer.isRunning());
 
@@ -98,7 +96,7 @@ TEST_F(TimerTests, ManualTimerStop) {
 
     timer.stop();
     EXPECT_FALSE(timer.isRunning());
-    EXPECT_CALL(*jobManagerMock, notify(_)).Times(0);
+    EXPECT_CALL(*ciManagerMock, notify(_)).Times(0);
     Poco::Thread::sleep(200);
 }
 

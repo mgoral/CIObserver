@@ -1,8 +1,6 @@
 #ifndef IJOBMANAGER_HPP
 #define IJOBMANAGER_HPP
 
-#include <memory>
-
 #include "IJob.hpp"
 #include "ITimerObserver.hpp"
 
@@ -10,12 +8,10 @@ namespace ci {
 
 namespace core {
 
-typedef std::shared_ptr<IJob> IJobPtr;
-
 /*
  * @brief Class which groups getched jobs per given Jenkins/Hudson address
  */
-class IJobManager : public ITimerObserver {
+class IJobManager {
 public:
     virtual ~IJobManager() {}
 
@@ -61,7 +57,14 @@ public:
      * @brief Sets CI instance name
      */
     virtual void setName(const Name& name) = 0;
+
+    /**
+     * @brief: Updates the information about jobs by parsing the web page from stored Url.
+     */
+    virtual void update() = 0;
 };
+
+typedef std::shared_ptr<IJobManager> IJobManagerPtr;
 
 } // namespace core
 

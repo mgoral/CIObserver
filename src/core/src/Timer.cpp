@@ -15,8 +15,7 @@ Timer::Timer(ITimerObserverPtr observer, Interval interval)
 : observer(observer), timer(30, interval), logger(Poco::Logger::get("CI.Core.Timer")) {
     timer.start(Poco::TimerCallback<ITimerObserver>(*observer, &ITimerObserver::notify));
     running = true;
-    poco_information(logger, Poco::format(_("Started notifying observer '%s' with interval %u."),
-        observer->getName().raw(), interval));
+    poco_information(logger, Poco::format(_("Started notifying observers with interval %u."), interval));
 }
 
 Timer::~Timer() {}
@@ -40,16 +39,14 @@ void Timer::setInterval(Interval interval) {
     else {
         timer.setPeriodicInterval(interval);
     }
-    poco_debug(logger, Poco::format(_("Changed interval for observer '%s' to %u."),
-        observer->getName().raw(), interval));
+    poco_debug(logger, Poco::format(_("Changed interval for observers to %u."), interval));
 }
 
 void Timer::start() {
     if(!running &&  0 < getInterval()) {
         timer.start(Poco::TimerCallback<ITimerObserver>(*observer, &ITimerObserver::notify));
         running = true;
-        poco_information(logger, Poco::format(_("Started notifying observer '%s' with interval %u."),
-            observer->getName().raw(), getInterval()));
+        poco_information(logger, Poco::format(_("Started notifying observers with interval %u."), getInterval()));
     }
 }
 
@@ -57,7 +54,7 @@ void Timer::stop() {
     if(running) {
         timer.stop();
         running = false;
-        poco_information(logger, Poco::format(_("Stopped notifying observer '%s'."), observer->getName().raw()));
+        poco_information(logger, _("Stopped notifying observers."));
     }
 }
 

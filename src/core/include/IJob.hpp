@@ -1,6 +1,7 @@
 #ifndef IJOB_HPP
 #define IJOB_HPP
 
+#include <memory>
 #include <deque>
 #include <Poco/DateTime.h>
 
@@ -81,6 +82,8 @@ public:
         return getUrl() < other.getUrl();
     }
 };
+
+typedef std::shared_ptr<IJob> IJobPtr;
 
 } // namespace core
 

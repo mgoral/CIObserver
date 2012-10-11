@@ -101,7 +101,7 @@ bool JobManager::setUrl(const Url& newUrl) {
     return false;
 }
 
-void JobManager::notify(Poco::Timer& timer) {
+void JobManager::update() {
     poco_information(logger, Poco::format(_("Fetching %s"), url.raw()));
 
 	Poco::URI uri(url);

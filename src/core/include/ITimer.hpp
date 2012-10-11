@@ -1,8 +1,6 @@
 #ifndef ITIMER_HPP
 #define TIMER_HPP
 
-#include <memory>
-
 #include "GlobalDefs.hpp"
 #include "ITimerObserver.hpp"
 
@@ -10,7 +8,6 @@ namespace ci {
 
 namespace core {
 
-typedef std::shared_ptr<ITimerObserver> ITimerObserverPtr;
 typedef u32 Interval;
 
 /*
@@ -52,11 +49,6 @@ public:
      * @brief Explicitly stop the timer.
      */
     virtual void stop() = 0;
-
-    bool operator <(const ITimer& other) const {
-        // FIXME: change this function name from operator< to another
-        return getObserver() < other.getObserver();
-    }
 };
 
 } // namespace core

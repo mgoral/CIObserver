@@ -31,6 +31,13 @@ typedef Glib::ustring Description;
 typedef Glib::ustring Url;
 typedef Glib::ustring Path;
 
+// constants
+enum SearchFound {
+    FOUND_INCORRECT = -1,
+    FOUND_CORRECT = 0,
+    FOUND_UNKNOWN = 1
+};
+
 } // namespace ci
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef IJOBMANAGERMOCK_HPP
 #define IJOBMANAGERMOCK_HPP
 
-#include <Poco/Timer.h>
 #include "IJobManager.hpp"
 
 namespace ci {
@@ -25,8 +24,8 @@ public:
         void(const Description& description));
     MOCK_METHOD1(setName,
         void(const Name& name));
-    MOCK_METHOD1(notify,
-        void(Poco::Timer& timer));
+    MOCK_METHOD0(update,
+        void());
 };
 
 }  // namespace core

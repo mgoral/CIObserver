@@ -49,6 +49,7 @@ public:
     void removeJob(const Url& url);
     void setDescription(const Description& newDescription);
     void setName(const Name& newName);
+    void update();
 };
 
 } // namespace core
