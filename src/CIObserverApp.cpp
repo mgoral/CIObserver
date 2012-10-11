@@ -12,6 +12,7 @@
 
 #include "CIObserverApp.hpp"
 #include "MainWindow.hpp"
+#include "JobEditDialog.hpp"
 
 namespace ci {
 
@@ -92,7 +93,9 @@ int CIObserverApp::main(const std::vector<std::string>& args) {
     }
 
     ci::gui::MainWindow* mainWindow = NULL;
+    ci::gui::JobEditDialog* jobEditDialog = NULL;
     refBuilder->get_widget_derived("CIMainWindow", mainWindow);
+    refBuilder->get_widget_derived("CIEdit", jobEditDialog);
 
     int retCode = gtkApp->run(*mainWindow);
     if(0 != retCode)
